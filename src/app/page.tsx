@@ -33,11 +33,11 @@ export default function Home() {
               <div className="mx-auto flex aspect-square w-full max-w-[600px] items-center justify-center overflow-hidden rounded-xl lg:order-last">
                  <Image
                   src="https://www.qoala.app/id/blog/wp-content/uploads/2021/01/Ilustrasi-Kesehatan-Mental-Diagnosis-Penyakit-hingga-Cara-Menjaga.jpg"
-                  width={600}
-                  height={600}
+                  width={800}
+                  height={400}
                   alt="Percakapan yang mendukung"
                   data-ai-hint="supportive conversation"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                 />
               </div>
             </div>
