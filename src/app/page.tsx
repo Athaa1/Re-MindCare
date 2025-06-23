@@ -8,12 +8,12 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-dvh">
       <main className="flex-1">
-        <section className="w-full py-20 md:py-32 lg:py-40 bg-primary/10">
+        <section className="w-full py-20 md:py-32 lg:py-40 bg-accent">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-6">
                 <div className="space-y-4">
-                   <div className="inline-block rounded-lg bg-accent/20 px-3 py-1 text-sm text-accent-foreground flex items-center gap-2">
+                   <div className="inline-block rounded-lg bg-background px-3 py-1 text-sm text-primary flex items-center gap-2">
                     <Sparkles className="w-4 h-4"/>
                     Pencocokan Berbasis AI
                   </div>
@@ -26,7 +26,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button asChild size="lg" className="font-semibold text-lg px-8 py-6">
-                    <Link href="/services">Temukan Jodoh Terapis Saya Sekarang</Link>
+                    <Link href="/services">Temukan Spesialis Terapis Saya Sekarang</Link>
                   </Button>
                 </div>
               </div>
