@@ -1,24 +1,10 @@
 
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+import Image from "next/image";
 
 export default function Home() {
-  const [animationData, setAnimationData] = useState(null);
-
-  useEffect(() => {
-    fetch('https://lottie.host/4a53dd98-9037-4f68-9279-82a176b61a86/4QxTkJj22J.json')
-      .then((response) => response.json())
-      .then((data) => setAnimationData(data));
-  }, []);
-
-
   return (
     <div className="flex flex-col min-h-dvh">
       <main className="flex-1">
@@ -45,15 +31,14 @@ export default function Home() {
                 </div>
               </div>
               <div className="mx-auto flex aspect-square w-full max-w-[600px] items-center justify-center overflow-hidden rounded-xl lg:order-last">
-                {animationData ? (
-                  <Lottie
-                    animationData={animationData}
-                    loop={true}
-                    className="h-full w-full"
-                  />
-                ) : (
-                  <div className="h-full w-full animate-pulse bg-muted/50" />
-                )}
+                 <Image
+                  src="https://placehold.co/600x600.png"
+                  width={600}
+                  height={600}
+                  alt="A supportive conversation"
+                  data-ai-hint="supportive conversation"
+                  className="h-full w-full object-cover"
+                />
               </div>
             </div>
           </div>
