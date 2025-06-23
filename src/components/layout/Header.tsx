@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrainCircuit, Menu, Search, UserCircle } from "lucide-react";
+import { BrainCircuit, Menu, Search, UserCircle, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -20,7 +20,7 @@ import { Input } from "../ui/input";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
+  { href: "/services", label: "Find a Specialist" },
   { href: "/resources", label: "Resources" },
   { href: "/forum", label: "Community Forum" },
 ];
@@ -113,10 +113,12 @@ export function Header() {
               key={href}
               href={href}
               className={cn(
-                "transition-colors hover:text-primary",
-                pathname === href ? "text-primary" : "text-muted-foreground"
+                "transition-colors hover:text-primary flex items-center gap-1.5",
+                pathname === href ? "text-primary" : "text-muted-foreground",
+                href === "/services" && "font-bold"
               )}
             >
+              {href === "/services" && <Sparkles className="w-4 h-4 text-primary/80" />}
               {label}
             </Link>
           ))}
@@ -144,11 +146,12 @@ export function Header() {
                             key={href}
                             href={href}
                             className={cn(
-                            "text-lg font-medium transition-colors hover:text-primary",
+                            "text-lg font-medium transition-colors hover:text-primary flex items-center gap-2",
                             pathname === href ? "text-primary" : "text-muted-foreground"
                             )}
                         >
-                            {label}
+                          {href === "/services" && <Sparkles className="w-5 h-5 text-primary/80" />}
+                          {label}
                         </Link>
                         ))}
                     </nav>

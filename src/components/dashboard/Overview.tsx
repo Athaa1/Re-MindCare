@@ -30,9 +30,9 @@ const quickLinks = [
     {
         icon: BookUser,
         title: "Find a Specialist",
-        description: "Search for therapists and counselors that fit your needs.",
-        href: "/dashboard/specialists",
-        cta: "Search Now"
+        description: "Get AI-powered recommendations for therapists and counselors.",
+        href: "/services",
+        cta: "Find a Match"
     },
     {
         icon: Users,
@@ -50,10 +50,10 @@ const quickLinks = [
     },
     {
         icon: HeartHandshake,
-        title: "AI Companion",
-        description: "Chat with our AI for guidance and resource recommendations.",
-        href: "/dashboard/chat",
-        cta: "Start Chatting"
+        title: "AI Resource Tool",
+        description: "Get AI-powered resource suggestions based on your posts.",
+        href: "/forum",
+        cta: "Get Suggestions"
     }
 ]
 
