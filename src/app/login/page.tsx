@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { BrainCircuit } from 'lucide-react';
+import { BrainCircuit, ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
   return (
@@ -38,6 +38,12 @@ export default function LoginPage() {
             </div>
             <Button asChild className="w-full">
               <Link href="/dashboard">Masuk</Link>
+            </Button>
+            <Button variant="outline" asChild className="w-full">
+              <Link href="/">
+                <ArrowLeft />
+                Kembali ke Beranda
+              </Link>
             </Button>
           </div>
         </CardContent>
