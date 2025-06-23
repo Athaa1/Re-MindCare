@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { BrainCircuit } from "lucide-react";
 
@@ -10,11 +11,6 @@ export function Footer() {
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
             &copy; {new Date().getFullYear()} Re-MindCare. All Rights Reserved.
           </p>
-        </div>
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <Link href="/services" className="hover:text-primary transition-colors">Services</Link>
-          <Link href="/resources" className="hover:text-primary transition-colors">Resources</Link>
-          <Link href="/forum" className="hover:text-primary transition-colors">Forum</Link>
         </div>
       </div>
     </footer>
