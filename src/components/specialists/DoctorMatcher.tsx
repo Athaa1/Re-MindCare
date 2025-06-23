@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, AlertCircle, Sparkles, UserCheck } from "lucide-react";
+import { Loader2, AlertCircle, Sparkles, UserCheck, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -126,6 +126,11 @@ export default function DoctorMatcher() {
                                     {specialist.reason}
                                 </AlertDescription>
                             </Alert>
+
+                            <Button className="mt-4 w-full md:w-auto">
+                                <MessageSquare />
+                                Contact {specialist.name}
+                            </Button>
 
                         </div>
                     </Card>
