@@ -2,109 +2,123 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from "@/components/ui/chart"
-import { RecentSales } from "@/components/dashboard/RecentSales"
-import { Activity, DollarSign, Users, CreditCard } from "lucide-react"
+import { UpcomingAppointments } from "@/components/dashboard/UpcomingAppointments"
+import { BookUser, Users, HeartHandshake, FolderKanban } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { day: "Mon", mood: 3 },
+  { day: "Tue", mood: 4 },
+  { day: "Wed", mood: 2 },
+  { day: "Thu", mood: 4 },
+  { day: "Fri", mood: 5 },
+  { day: "Sat", mood: 3 },
+  { day: "Sun", mood: 4 },
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  mood: {
+    label: "Mood",
     color: "hsl(var(--primary))",
   },
 } satisfies ChartConfig
 
+const quickLinks = [
+    {
+        icon: BookUser,
+        title: "Find a Specialist",
+        description: "Search for therapists and counselors that fit your needs.",
+        href: "/dashboard/specialists",
+        cta: "Search Now"
+    },
+    {
+        icon: Users,
+        title: "Community Forum",
+        description: "Connect with peers and share your experiences in a safe space.",
+        href: "/forum",
+        cta: "Go to Forum"
+    },
+    {
+        icon: FolderKanban,
+        title: "Resource Hub",
+        description: "Explore articles, videos, and tools for your mental wellness.",
+        href: "/resources",
+        cta: "Browse Resources"
+    },
+    {
+        icon: HeartHandshake,
+        title: "AI Companion",
+        description: "Chat with our AI for guidance and resource recommendations.",
+        href: "/dashboard/chat",
+        cta: "Start Chatting"
+    }
+]
+
 export function Overview() {
     return (
-        <div className="flex flex-col gap-4">
-             <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Total Revenue
-                        </CardTitle>
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">$45,231.89</div>
-                        <p className="text-xs text-muted-foreground">
-                            +20.1% from last month
-                        </p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Subscriptions
-                        </CardTitle>
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">+2350</div>
-                        <p className="text-xs text-muted-foreground">
-                            +180.1% from last month
-                        </p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                        <CreditCard className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">+12,234</div>
-                        <p className="text-xs text-muted-foreground">
-                            +19% from last month
-                        </p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Active Now
-                        </CardTitle>
-                        <Activity className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">+573</div>
-                        <p className="text-xs text-muted-foreground">
-                            +201 since last hour
-                        </p>
-                    </CardContent>
-                </Card>
+        <div className="flex flex-col gap-6">
+            <div>
+                <h1 className="text-3xl font-bold">Welcome to your Dashboard</h1>
+                <p className="text-muted-foreground">Here's your personalized mental wellness overview.</p>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {quickLinks.map((link) => (
+                    <Card key={link.title} className="flex flex-col">
+                        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+                            <CardTitle className="text-lg font-medium">
+                                {link.title}
+                            </CardTitle>
+                            <div className="bg-primary/10 p-2 rounded-lg">
+                                <link.icon className="h-5 w-5 text-primary" />
+                            </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                            <p className="text-sm text-muted-foreground">
+                                {link.description}
+                            </p>
+                        </CardContent>
+                        <CardContent>
+                             <Button asChild className="w-full">
+                                <Link href={link.href}>{link.cta}</Link>
+                            </Button>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                     <CardHeader>
-                        <CardTitle>Overview</CardTitle>
+                        <CardTitle>Your Weekly Mood Journey</CardTitle>
+                        <CardDescription>Track your mood fluctuations over the past week.</CardDescription>
                     </CardHeader>
                     <CardContent className="pl-2">
                        <ChartContainer config={chartConfig} className="w-full h-[300px]">
-                            <BarChart data={chartData} accessibilityLayer>
+                            <BarChart data={chartData} accessibilityLayer margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
                                 <CartesianGrid vertical={false} />
                                 <XAxis
-                                dataKey="month"
-                                tickLine={false}
-                                tickMargin={10}
-                                axisLine={false}
-                                tickFormatter={(value) => value.slice(0, 3)}
+                                    dataKey="day"
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
                                 />
-                                <ChartTooltip content={<ChartTooltipContent />} />
-                                <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+                                <YAxis domain={[0, 5]} tickLine={false} axisLine={false} tickMargin={10} />
+                                <ChartTooltip 
+                                    cursor={false}
+                                    content={<ChartTooltipContent 
+                                        indicator="dot"
+                                        labelFormatter={(value, payload) => `Mood on ${payload[0]?.payload.day}: ${payload[0]?.value}/5`}
+                                        formatter={() => ''}
+                                     />} 
+                                />
+                                <Bar dataKey="mood" fill="var(--color-mood)" radius={8} />
                             </BarChart>
                         </ChartContainer>
                     </CardContent>
                 </Card>
-                <RecentSales />
+                <UpcomingAppointments />
             </div>
         </div>
     )
