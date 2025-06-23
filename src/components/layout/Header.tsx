@@ -1,8 +1,7 @@
-
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BrainCircuit, Menu, Search, UserCircle, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -27,6 +26,7 @@ const navLinks = [
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const isDashboard = pathname.startsWith('/dashboard');
 
   if (isDashboard) {
@@ -90,10 +90,10 @@ export function Header() {
                 <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Pengaturan</DropdownMenuItem>
-                <DropdownMenuItem>Dukungan</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/dashboard/settings')}>Pengaturan</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">Dukungan</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Keluar</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/login')}>Keluar</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </header>
