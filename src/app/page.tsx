@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function Home() {
   const [animationData, setAnimationData] = useState(null);
