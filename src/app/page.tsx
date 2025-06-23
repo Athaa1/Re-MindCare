@@ -1,10 +1,22 @@
 
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import Lottie from "lottie-react";
 
 export default function Home() {
+  const [animationData, setAnimationData] = useState(null);
+
+  useEffect(() => {
+    fetch('https://lottie.host/4a53dd98-9037-4f68-9279-82a176b61a86/4QxTkJj22J.json')
+      .then((response) => response.json())
+      .then((data) => setAnimationData(data));
+  }, []);
+
+
   return (
     <div className="flex flex-col min-h-dvh">
       <main className="flex-1">
@@ -30,14 +42,17 @@ export default function Home() {
                   </Button>
                 </div>
               </div>
-              <Image
-                src="https://placehold.co/600x600.png"
-                width="600"
-                height="600"
-                alt="AI matching specialists"
-                data-ai-hint="supportive conversation"
-                className="mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
-              />
+              <div className="mx-auto flex aspect-square w-full max-w-[600px] items-center justify-center overflow-hidden rounded-xl lg:order-last">
+                {animationData ? (
+                  <Lottie
+                    animationData={animationData}
+                    loop={true}
+                    className="h-full w-full"
+                  />
+                ) : (
+                  <div className="h-full w-full animate-pulse bg-muted/50" />
+                )}
+              </div>
             </div>
           </div>
         </section>
