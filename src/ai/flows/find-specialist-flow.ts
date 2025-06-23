@@ -11,7 +11,7 @@ import {ai} from '@/ai/genkit';
 import { specialists } from '@/data/specialists';
 import {z} from 'genkit';
 
-export const FindSpecialistInputSchema = z.object({
+const FindSpecialistInputSchema = z.object({
   complaint: z.string().describe('A description of the user\'s mental health concerns or what they are looking for in a therapist.'),
 });
 export type FindSpecialistInput = z.infer<typeof FindSpecialistInputSchema>;
@@ -25,7 +25,7 @@ const RecommendedSpecialistSchema = z.object({
   reason: z.string().describe('A detailed explanation of why this specialist is a good match for the user based on their complaint.'),
 });
 
-export const FindSpecialistOutputSchema = z.object({
+const FindSpecialistOutputSchema = z.object({
   recommendations: z.array(RecommendedSpecialistSchema).describe('A list of up to 3 recommended specialists.'),
 });
 export type FindSpecialistOutput = z.infer<typeof FindSpecialistOutputSchema>;
