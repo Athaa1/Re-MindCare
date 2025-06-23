@@ -21,7 +21,7 @@ const RecommendedSpecialistSchema = z.object({
   title: z.string().describe('The professional title of the specialist.'),
   specialties: z.array(z.string()).describe('A list of the specialist\'s areas of expertise.'),
   bio: z.string().describe('A brief biography of the specialist.'),
-  imageUrl: z.string().url().describe('A URL to a photo of the specialist.'),
+  imageUrl: z.string().describe('A URL to a photo of the specialist.'),
   reason: z.string().describe('A detailed explanation of why this specialist is a good match for the user based on their complaint.'),
 });
 

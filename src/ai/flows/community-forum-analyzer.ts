@@ -17,7 +17,7 @@ const AnalyzeForumContentInputSchema = z.object({
     .describe('The text content from the community forum post or interaction.'),
   availableResources: z.array(z.object({
     title: z.string(),
-    url: z.string().url(),
+    url: z.string(),
     description: z.string(),
   })).describe('A list of available resources with titles, URLs, and descriptions.'),
 });
@@ -26,7 +26,7 @@ export type AnalyzeForumContentInput = z.infer<typeof AnalyzeForumContentInputSc
 const AnalyzeForumContentOutputSchema = z.object({
   suggestedResources: z.array(z.object({
     title: z.string(),
-    url: z.string().url(),
+    url: z.string(),
     reason: z.string().describe('The reason why this resource is suggested.'),
   })).describe('A list of suggested resources with reasons for each suggestion.'),
 });
@@ -42,7 +42,7 @@ const resourceEvaluatorTool = ai.defineTool({
   inputSchema: z.object({
     resource: z.object({
       title: z.string(),
-      url: z.string().url(),
+      url: z.string(),
       description: z.string(),
     }).describe('The resource to evaluate.'),
     forumContent: z.string().describe('The content from the community forum.'),
