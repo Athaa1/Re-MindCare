@@ -32,7 +32,7 @@ export default function Home() {
               </div>
               <div className="mx-auto flex aspect-square w-full max-w-[600px] items-center justify-center overflow-hidden rounded-xl lg:order-last">
                  <Image
-                  src="https://placehold.co/600x600.png"
+                  src="https://www.qoala.app/id/blog/wp-content/uploads/2021/01/Ilustrasi-Kesehatan-Mental-Diagnosis-Penyakit-hingga-Cara-Menjaga.jpg"
                   width={600}
                   height={600}
                   alt="Percakapan yang mendukung"
