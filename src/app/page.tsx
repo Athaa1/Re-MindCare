@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
@@ -34,7 +35,7 @@ export default function Home() {
                 width="600"
                 height="600"
                 alt="AI matching specialists"
-                data-ai-hint="brain network connection"
+                data-ai-hint="supportive conversation"
                 className="mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
               />
             </div>
