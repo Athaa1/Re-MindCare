@@ -7,20 +7,20 @@ const forumPosts = [
   {
     author: "Alex R.",
     avatar: "https://placehold.co/40x40.png",
-    content: "Feeling really overwhelmed with school lately. It's hard to find the motivation to even start my assignments. Anyone else feel this way?",
-    timestamp: "2 hours ago",
+    content: "Akhir-akhir ini merasa sangat tertekan dengan tugas sekolah. Sulit sekali menemukan motivasi bahkan untuk memulai. Ada yang merasa seperti ini juga?",
+    timestamp: "2 jam yang lalu",
   },
   {
     author: "Jamie L.",
     avatar: "https://placehold.co/40x40.png",
-    content: "I had a great session with my therapist today! We talked about setting boundaries and it already feels like a weight has been lifted.",
-    timestamp: "5 hours ago",
+    content: "Sesi dengan terapis hari ini menyenangkan! Kami bicara tentang menetapkan batasan dan rasanya beban jadi lebih ringan.",
+    timestamp: "5 jam yang lalu",
   },
   {
     author: "Sam K.",
     avatar: "https://placehold.co/40x40.png",
-    content: "Does anyone have tips for dealing with social anxiety? I have a party this weekend and I'm already nervous about it.",
-    timestamp: "1 day ago",
+    content: "Ada yang punya tips mengatasi kecemasan sosial? Akhir pekan ini ada pesta dan aku sudah cemas dari sekarang.",
+    timestamp: "1 hari yang lalu",
   },
 ];
 
@@ -31,13 +31,13 @@ export default function ForumPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2">
           <div className="space-y-4 mb-12">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl font-headline">Community Forum</h1>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl font-headline">Forum Komunitas</h1>
             <p className="max-w-2xl text-lg text-muted-foreground">
-              A safe space to share experiences, ask questions, and connect with peers who understand.
+              Ruang aman untuk berbagi pengalaman, bertanya, dan terhubung dengan teman sebaya yang memahami.
             </p>
           </div>
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold font-headline">Recent Posts</h2>
+            <h2 className="text-2xl font-semibold font-headline">Postingan Terbaru</h2>
             {forumPosts.map((post) => (
               <Card key={post.author}>
                 <CardHeader className="flex flex-row items-center gap-4">

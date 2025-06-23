@@ -19,10 +19,10 @@ import {
 import { Input } from "../ui/input";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Find a Specialist" },
-  { href: "/resources", label: "Resources" },
-  { href: "/forum", label: "Community Forum" },
+  { href: "/", label: "Beranda" },
+  { href: "/services", label: "Cari Spesialis" },
+  { href: "/resources", label: "Sumber Daya" },
+  { href: "/forum", label: "Forum Komunitas" },
 ];
 
 export function Header() {
@@ -36,7 +36,7 @@ export function Header() {
                 <SheetTrigger asChild>
                 <Button size="icon" variant="outline" className="sm:hidden">
                     <Menu className="h-5 w-5" />
-                    <span className="sr-only">Toggle Menu</span>
+                    <span className="sr-only">Alihkan Menu</span>
                 </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="sm:max-w-xs">
@@ -52,19 +52,19 @@ export function Header() {
                         href="/dashboard"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
-                        Dashboard
+                        Dasbor
                     </Link>
                     <Link
                         href="/dashboard/analytics"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
-                        Analytics
+                        Analitik
                     </Link>
                     <Link
                         href="/dashboard/settings"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
-                        Settings
+                        Pengaturan
                     </Link>
                 </nav>
                 </SheetContent>
@@ -73,7 +73,7 @@ export function Header() {
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                     type="search"
-                    placeholder="Search..."
+                    placeholder="Cari..."
                     className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
                 />
             </div>
@@ -88,12 +88,12 @@ export function Header() {
                 </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuItem>Pengaturan</DropdownMenuItem>
+                <DropdownMenuItem>Dukungan</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem>Keluar</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </header>
@@ -125,14 +125,14 @@ export function Header() {
         </nav>
         <div className="flex flex-1 items-center justify-end">
             <Button asChild>
-                <Link href="/login">Login</Link>
+                <Link href="/login">Masuk</Link>
             </Button>
             <div className="md:hidden ml-4">
                 <Sheet>
                     <SheetTrigger asChild>
                     <Button variant="ghost" size="icon">
                         <Menu className="h-6 w-6" />
-                        <span className="sr-only">Toggle navigation menu</span>
+                        <span className="sr-only">Alihkan menu navigasi</span>
                     </Button>
                     </SheetTrigger>
                     <SheetContent side="left">

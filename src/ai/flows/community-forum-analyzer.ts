@@ -14,12 +14,12 @@ import {z} from 'genkit';
 const AnalyzeForumContentInputSchema = z.object({
   forumContent: z
     .string()
-    .describe('The text content from the community forum post or interaction.'),
+    .describe('Konten teks dari postingan atau interaksi forum komunitas.'),
   availableResources: z.array(z.object({
     title: z.string(),
     url: z.string(),
     description: z.string(),
-  })).describe('A list of available resources with titles, URLs, and descriptions.'),
+  })).describe('Daftar sumber daya yang tersedia dengan judul, URL, dan deskripsi.'),
 });
 export type AnalyzeForumContentInput = z.infer<typeof AnalyzeForumContentInputSchema>;
 
@@ -27,8 +27,8 @@ const AnalyzeForumContentOutputSchema = z.object({
   suggestedResources: z.array(z.object({
     title: z.string(),
     url: z.string(),
-    reason: z.string().describe('The reason why this resource is suggested.'),
-  })).describe('A list of suggested resources with reasons for each suggestion.'),
+    reason: z.string().describe('Alasan mengapa sumber daya ini disarankan.'),
+  })).describe('Daftar sumber daya yang disarankan dengan alasan untuk setiap saran.'),
 });
 export type AnalyzeForumContentOutput = z.infer<typeof AnalyzeForumContentOutputSchema>;
 
@@ -38,18 +38,18 @@ export async function analyzeForumContent(input: AnalyzeForumContentInput): Prom
 
 const resourceEvaluatorTool = ai.defineTool({
   name: 'resourceEvaluator',
-  description: 'Determine if a given resource is relevant to the forum content.',
+  description: 'Tentukan apakah sumber daya yang diberikan relevan dengan konten forum.',
   inputSchema: z.object({
     resource: z.object({
       title: z.string(),
       url: z.string(),
       description: z.string(),
-    }).describe('The resource to evaluate.'),
-    forumContent: z.string().describe('The content from the community forum.'),
+    }).describe('Sumber daya untuk dievaluasi.'),
+    forumContent: z.string().describe('Konten dari forum komunitas.'),
   }),
   outputSchema: z.object({
-    isRelevant: z.boolean().describe('Whether the resource is relevant to the forum content.'),
-    reason: z.string().describe('The reason for the relevance assessment.'),
+    isRelevant: z.boolean().describe('Apakah sumber daya tersebut relevan dengan konten forum.'),
+    reason: z.string().describe('Alasan penilaian relevansi.'),
   }),
 },
 async (input) => {
@@ -63,31 +63,31 @@ const prompt = ai.definePrompt({
   input: {schema: AnalyzeForumContentInputSchema},
   output: {schema: AnalyzeForumContentOutputSchema},
   tools: [resourceEvaluatorTool],
-  prompt: `You are an AI assistant designed to analyze community forum content and suggest relevant resources to users.
+  prompt: `Anda adalah asisten AI yang dirancang untuk menganalisis konten forum komunitas dan menyarankan sumber daya yang relevan kepada pengguna.
 
-  Your task is to analyze the provided forum content and, using the available resources, determine which resources would be most helpful to the user.
-  For each resource you suggest, explain why it would be helpful to the user based on their forum content.
+  Tugas Anda adalah menganalisis konten forum yang disediakan dan, dengan menggunakan sumber daya yang tersedia, menentukan sumber daya mana yang paling membantu pengguna.
+  Untuk setiap sumber daya yang Anda sarankan, jelaskan mengapa sumber daya tersebut akan membantu pengguna berdasarkan konten forum mereka.
 
-  Forum Content: {{{forumContent}}}
+  Konten Forum: {{{forumContent}}}
 
-  Available Resources:
+  Sumber Daya Tersedia:
   {{#each availableResources}}
-  - Title: {{{this.title}}}
+  - Judul: {{{this.title}}}
     URL: {{{this.url}}}
-    Description: {{{this.description}}}
+    Deskripsi: {{{this.description}}}
   {{/each}}
 
-  Based on the forum content, suggest resources that would be most helpful to the user. Explain your reasoning for each suggestion.
-  Ensure that the suggested resources are highly relevant to the user's needs and interests as expressed in the forum content.
-  If a user is expressing suicidal thoughts or intent, recommend resources to prevent suicide.
+  Berdasarkan konten forum, sarankan sumber daya yang paling membantu pengguna. Jelaskan alasan Anda untuk setiap saran.
+  Pastikan sumber daya yang disarankan sangat relevan dengan kebutuhan dan minat pengguna seperti yang diungkapkan dalam konten forum.
+  Jika pengguna mengungkapkan pemikiran atau niat bunuh diri, rekomendasikan sumber daya untuk mencegah bunuh diri.
 
-  Output should be in the following JSON format:
+  Keluaran harus dalam format JSON berikut:
   {
     "suggestedResources": [
       {
         "title": "Resource Title",
         "url": "Resource URL",
-        "reason": "Explanation of why this resource is helpful based on the forum content."
+        "reason": "Penjelasan mengapa sumber daya ini bermanfaat berdasarkan konten forum."
       }
     ]
   }

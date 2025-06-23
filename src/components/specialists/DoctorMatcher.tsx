@@ -26,8 +26,8 @@ export default function DoctorMatcher() {
     if (!text.trim()) {
       toast({
         variant: "destructive",
-        title: "Input required",
-        description: "Please describe what you're going through to get a match.",
+        title: "Input diperlukan",
+        description: "Harap jelaskan apa yang sedang Anda alami untuk mendapatkan pasangan yang cocok.",
       });
       return;
     }
@@ -41,11 +41,11 @@ export default function DoctorMatcher() {
       setResults(result.recommendations);
     } catch (e) {
       console.error(e);
-      setError("Sorry, we couldn't find a match at this time. Please try again later.");
+      setError("Maaf, kami tidak dapat menemukan yang cocok saat ini. Silakan coba lagi nanti.");
       toast({
         variant: "destructive",
-        title: "An error occurred",
-        description: "Failed to fetch AI recommendations.",
+        title: "Terjadi kesalahan",
+        description: "Gagal mengambil rekomendasi AI.",
       });
     } finally {
       setLoading(false);
@@ -59,15 +59,15 @@ export default function DoctorMatcher() {
                 <div className="flex justify-center mb-4">
                     <Sparkles className="w-12 h-12 text-primary" />
                 </div>
-                <CardTitle className="font-headline text-3xl">Find the Right Specialist for You</CardTitle>
+                <CardTitle className="font-headline text-3xl">Temukan Spesialis yang Tepat untuk Anda</CardTitle>
                 <CardDescription className="text-lg">
-                    Describe what you're feeling or what challenges you're facing. Our AI will match you with professionals who can help.
+                    Jelaskan apa yang Anda rasakan atau tantangan apa yang Anda hadapi. AI kami akan mencocokkan Anda dengan para profesional yang dapat membantu.
                 </CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit}>
                 <CardContent>
                 <Textarea
-                    placeholder="For example: 'I feel anxious all the time, especially in social situations. I have trouble sleeping and can't focus on my studies...'"
+                    placeholder="Contoh: 'Saya merasa cemas sepanjang waktu, terutama dalam situasi sosial. Saya sulit tidur dan tidak bisa fokus belajar...'"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     rows={6}
@@ -80,10 +80,10 @@ export default function DoctorMatcher() {
                     {loading ? (
                     <>
                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Finding Your Match...
+                        Mencari Kecocokan Anda...
                     </>
                     ) : (
-                    "Find My Match"
+                    "Temukan Kecocokan Saya"
                     )}
                 </Button>
                 </CardFooter>
@@ -94,15 +94,15 @@ export default function DoctorMatcher() {
             {error && (
                 <Alert variant="destructive" className="max-w-3xl mx-auto">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
+                    <AlertTitle>Kesalahan</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                 </Alert>
             )}
             {results && (
             <div className="space-y-8">
                 <div className="text-center">
-                    <h2 className="text-3xl font-bold font-headline">Your Recommended Specialists</h2>
-                    <p className="text-muted-foreground mt-2">Here are some professionals who seem like a great fit for you.</p>
+                    <h2 className="text-3xl font-bold font-headline">Spesialis yang Direkomendasikan untuk Anda</h2>
+                    <p className="text-muted-foreground mt-2">Berikut adalah beberapa profesional yang tampaknya cocok untuk Anda.</p>
                 </div>
                 {results.length > 0 ? (
                     results.map((specialist) => (
@@ -121,7 +121,7 @@ export default function DoctorMatcher() {
                             
                             <Alert className="bg-accent/50 border-accent">
                                 <UserCheck className="h-5 w-5 text-accent-foreground" />
-                                <AlertTitle className="text-accent-foreground font-semibold">Why they're a good match:</AlertTitle>
+                                <AlertTitle className="text-accent-foreground font-semibold">Mengapa mereka cocok:</AlertTitle>
                                 <AlertDescription className="text-accent-foreground/90">
                                     {specialist.reason}
                                 </AlertDescription>
@@ -129,7 +129,7 @@ export default function DoctorMatcher() {
 
                             <Button className="mt-4 w-full md:w-auto">
                                 <MessageSquare />
-                                Contact {specialist.name}
+                                Hubungi {specialist.name}
                             </Button>
 
                         </div>
@@ -137,7 +137,7 @@ export default function DoctorMatcher() {
                     ))
                 ) : (
                     <p className="text-sm text-muted-foreground text-center py-8">
-                        We couldn't find a specific match based on your description. Try rephrasing or feel free to browse our <Link href="/resources" className="underline text-primary">Resources</Link> page.
+                        Kami tidak dapat menemukan kecocokan spesifik berdasarkan deskripsi Anda. Coba ulangi dengan kalimat lain atau jangan ragu untuk menelusuri halaman <Link href="/resources" className="underline text-primary">Sumber Daya</Link> kami.
                     </p>
                 )}
             </div>

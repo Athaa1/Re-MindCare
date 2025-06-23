@@ -4,14 +4,14 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 export default function SettingsPage() {
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-6">Settings</h1>
+            <h1 className="text-3xl font-bold mb-6">Pengaturan</h1>
             <Card>
                 <CardHeader>
-                    <CardTitle>Settings Panel</CardTitle>
-                    <CardDescription>Manage your account and application settings here.</CardDescription>
+                    <CardTitle>Panel Pengaturan</CardTitle>
+                    <CardDescription>Kelola akun dan pengaturan aplikasi Anda di sini.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p>Settings options will be available here soon.</p>
+                    <p>Opsi pengaturan akan segera tersedia di sini.</p>
                 </CardContent>
             </Card>
         </div>

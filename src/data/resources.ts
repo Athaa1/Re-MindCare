@@ -4,57 +4,57 @@ export type Resource = {
   description: string;
   imageUrl: string;
   imageHint: string;
-  type: "Article" | "Video";
+  type: "Artikel" | "Video";
 };
 
 export const resources: Resource[] = [
   {
-    title: "Understanding Anxiety in Teens",
+    title: "Memahami Kecemasan pada Remaja",
     url: "/resources/understanding-anxiety",
-    description: "An in-depth article exploring the common causes and symptoms of anxiety among adolescents and how to cope.",
+    description: "Artikel mendalam yang membahas penyebab umum dan gejala kecemasan di kalangan remaja serta cara mengatasinya.",
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "teenager thinking",
-    type: "Article",
+    type: "Artikel",
   },
   {
-    title: "Mindfulness Meditation for Beginners",
+    title: "Meditasi Kesadaran untuk Pemula",
     url: "/resources/mindfulness-meditation",
-    description: "A guided video session to introduce teens to mindfulness practices for stress reduction and mental clarity.",
+    description: "Sesi video terpandu untuk memperkenalkan remaja pada praktik kesadaran untuk mengurangi stres dan kejernihan mental.",
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "person meditating",
     type: "Video",
   },
   {
-    title: "The Importance of Sleep for Mental Health",
+    title: "Pentingnya Tidur untuk Kesehatan Mental",
     url: "/resources/sleep-importance",
-    description: "Learn about the crucial link between sleep quality and mental well-being for young adults.",
+    description: "Pelajari hubungan penting antara kualitas tidur dan kesejahteraan mental bagi dewasa muda.",
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "person sleeping",
-    type: "Article",
+    type: "Artikel",
   },
   {
-    title: "Building Healthy Friendships",
+    title: "Membangun Persahabatan Sehat",
     url: "/resources/healthy-friendships",
-    description: "A video guide on how to foster supportive and positive friendships during your teenage years.",
+    description: "Panduan video tentang cara membina persahabatan yang suportif dan positif selama masa remaja.",
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "friends talking",
     type: "Video",
   },
   {
-    title: "Coping with Exam Stress",
+    title: "Mengatasi Stres Ujian",
     url: "/resources/exam-stress",
-    description: "Practical tips and strategies to manage stress and anxiety during exam periods.",
+    description: "Kiat dan strategi praktis untuk mengelola stres dan kecemasan selama masa ujian.",
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "student studying",
-    type: "Article",
+    type: "Artikel",
   },
   {
-    title: "How to Talk to Your Parents",
+    title: "Cara Berbicara dengan Orang Tua",
     url: "/resources/talk-to-parents",
-    description: "Guidance on how to open up to your parents about your mental health struggles.",
+    description: "Panduan tentang cara terbuka kepada orang tua mengenai masalah kesehatan mental Anda.",
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "family conversation",
-    type: "Article",
+    type: "Artikel",
   },
 ];
 

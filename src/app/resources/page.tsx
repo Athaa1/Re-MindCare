@@ -9,9 +9,9 @@ export default function ResourcesPage() {
   return (
     <div className="container mx-auto px-4 py-12 md:px-6 lg:py-20">
       <div className="text-center space-y-4 mb-12">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl font-headline">Resource Hub</h1>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl font-headline">Pusat Sumber Daya</h1>
         <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
-          Explore our curated collection of articles, videos, and tools to support your mental health journey.
+          Jelajahi koleksi artikel, video, dan alat pilihan kami untuk mendukung perjalanan kesehatan mental Anda.
         </p>
       </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -42,7 +42,7 @@ export default function ResourcesPage() {
             <CardFooter className="p-6 pt-0">
               <Button asChild className="w-full font-semibold">
                 <Link href={resource.url}>
-                  {resource.type === 'Video' ? 'Watch Now' : 'Read More'}
+                  {resource.type === 'Video' ? 'Tonton Sekarang' : 'Baca Selengkapnya'}
                 </Link>
               </Button>
             </CardFooter>

@@ -10,18 +10,18 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 const chartData = [
-  { day: "Mon", mood: 3 },
-  { day: "Tue", mood: 4 },
-  { day: "Wed", mood: 2 },
-  { day: "Thu", mood: 4 },
-  { day: "Fri", mood: 5 },
-  { day: "Sat", mood: 3 },
-  { day: "Sun", mood: 4 },
+  { day: "Sen", mood: 3 },
+  { day: "Sel", mood: 4 },
+  { day: "Rab", mood: 2 },
+  { day: "Kam", mood: 4 },
+  { day: "Jum", mood: 5 },
+  { day: "Sab", mood: 3 },
+  { day: "Min", mood: 4 },
 ];
 
 const chartConfig = {
   mood: {
-    label: "Mood",
+    label: "Suasana Hati",
     color: "hsl(var(--primary))",
   },
 } satisfies ChartConfig
@@ -29,31 +29,31 @@ const chartConfig = {
 const quickLinks = [
     {
         icon: BookUser,
-        title: "Find a Specialist",
-        description: "Get AI-powered recommendations for therapists and counselors.",
+        title: "Temukan Spesialis",
+        description: "Dapatkan rekomendasi terapis dan konselor berbasis AI.",
         href: "/services",
-        cta: "Find a Match"
+        cta: "Temukan yang Cocok"
     },
     {
         icon: Users,
-        title: "Community Forum",
-        description: "Connect with peers and share your experiences in a safe space.",
+        title: "Forum Komunitas",
+        description: "Terhubung dengan teman sebaya dan bagikan pengalaman Anda di ruang yang aman.",
         href: "/forum",
-        cta: "Go to Forum"
+        cta: "Buka Forum"
     },
     {
         icon: FolderKanban,
-        title: "Resource Hub",
-        description: "Explore articles, videos, and tools for your mental wellness.",
+        title: "Pusat Sumber Daya",
+        description: "Jelajahi artikel, video, dan alat untuk kesehatan mental Anda.",
         href: "/resources",
-        cta: "Browse Resources"
+        cta: "Jelajahi Sumber Daya"
     },
     {
         icon: HeartHandshake,
-        title: "AI Resource Tool",
-        description: "Get AI-powered resource suggestions based on your posts.",
+        title: "Alat Sumber Daya AI",
+        description: "Dapatkan saran sumber daya berbasis AI berdasarkan postingan Anda.",
         href: "/forum",
-        cta: "Get Suggestions"
+        cta: "Dapatkan Saran"
     }
 ]
 
@@ -61,8 +61,8 @@ export function Overview() {
     return (
         <div className="flex flex-col gap-6">
             <div>
-                <h1 className="text-3xl font-bold">Welcome to your Dashboard</h1>
-                <p className="text-muted-foreground">Here's your personalized mental wellness overview.</p>
+                <h1 className="text-3xl font-bold">Selamat Datang di Dasbor Anda</h1>
+                <p className="text-muted-foreground">Berikut adalah ringkasan kesehatan mental pribadi Anda.</p>
             </div>
              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {quickLinks.map((link) => (
@@ -91,8 +91,8 @@ export function Overview() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                     <CardHeader>
-                        <CardTitle>Your Weekly Mood Journey</CardTitle>
-                        <CardDescription>Track your mood fluctuations over the past week.</CardDescription>
+                        <CardTitle>Perjalanan Mood Mingguan Anda</CardTitle>
+                        <CardDescription>Lacak fluktuasi suasana hati Anda selama seminggu terakhir.</CardDescription>
                     </CardHeader>
                     <CardContent className="pl-2">
                        <ChartContainer config={chartConfig} className="w-full h-[300px]">
@@ -109,7 +109,7 @@ export function Overview() {
                                     cursor={false}
                                     content={<ChartTooltipContent 
                                         indicator="dot"
-                                        labelFormatter={(value, payload) => `Mood on ${payload[0]?.payload.day}: ${payload[0]?.value}/5`}
+                                        labelFormatter={(value, payload) => `Suasana hati pada hari ${payload[0]?.payload.day}: ${payload[0]?.value}/5`}
                                         formatter={() => ''}
                                      />} 
                                 />

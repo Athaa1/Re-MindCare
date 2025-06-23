@@ -28,34 +28,34 @@ const moodData = [
 ];
 
 const activityData = [
-  { name: "Therapy Sessions", value: 400, fill: "hsl(var(--chart-1))" },
-  { name: "Journaling", value: 300, fill: "hsl(var(--chart-2))" },
-  { name: "Community Posts", value: 200, fill: "hsl(var(--chart-3))" },
-  { name: "Resource Access", value: 278, fill: "hsl(var(--chart-4))" },
+  { name: "Sesi Terapi", value: 400, fill: "hsl(var(--chart-1))" },
+  { name: "Menulis Jurnal", value: 300, fill: "hsl(var(--chart-2))" },
+  { name: "Postingan Komunitas", value: 200, fill: "hsl(var(--chart-3))" },
+  { name: "Akses Sumber Daya", value: 278, fill: "hsl(var(--chart-4))" },
 ];
 
 const resourceData = [
-  { name: "Anxiety", views: 4000 },
-  { name: "Depression", views: 3000 },
-  { name: "Stress", views: 2000 },
-  { name: "Sleep", views: 2780 },
-  { name: "Relationships", views: 1890 },
+  { name: "Kecemasan", views: 4000 },
+  { name: "Depresi", views: 3000 },
+  { name: "Stres", views: 2000 },
+  { name: "Tidur", views: 2780 },
+  { name: "Hubungan", views: 1890 },
 ];
 
 const moodChartConfig = {
   mood: {
-    label: "Overall Mood",
+    label: "Suasana Hati Keseluruhan",
     color: "hsl(var(--chart-2))",
   },
   anxiety: {
-    label: "Anxiety Level",
+    label: "Tingkat Kecemasan",
     color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig
 
 const activityChartConfig = {
     value: {
-        label: "Activities",
+        label: "Aktivitas",
     },
     ...Object.fromEntries(activityData.map(d => [d.name, { label: d.name, color: d.fill }]))
 } satisfies ChartConfig
@@ -71,8 +71,8 @@ export default function AnalyticsPage() {
         <div className="flex flex-col gap-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h1>
-                    <p className="text-muted-foreground">An overview of your mental wellness journey.</p>
+                    <h1 className="text-3xl font-bold tracking-tight">Dasbor Analitik</h1>
+                    <p className="text-muted-foreground">Ringkasan perjalanan kesehatan mental Anda.</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <Popover>
@@ -96,7 +96,7 @@ export default function AnalyticsPage() {
                                 format(date.from, "LLL dd, y")
                             )
                             ) : (
-                            <span>Pick a date</span>
+                            <span>Pilih tanggal</span>
                             )}
                         </Button>
                         </PopoverTrigger>
@@ -117,42 +117,42 @@ export default function AnalyticsPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Mood Trend</CardTitle>
+                        <CardTitle className="text-sm font-medium">Tren Suasana Hati</CardTitle>
                         <TrendingUp className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">Slightly Improved</div>
-                        <p className="text-xs text-muted-foreground">+2% from last week</p>
+                        <div className="text-2xl font-bold">Sedikit Membaik</div>
+                        <p className="text-xs text-muted-foreground">+2% dari minggu lalu</p>
                     </CardContent>
                 </Card>
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Session Hours</CardTitle>
+                        <CardTitle className="text-sm font-medium">Jam Sesi</CardTitle>
                         <Clock className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">+12h</div>
-                        <p className="text-xs text-muted-foreground">+15% from last month</p>
+                        <div className="text-2xl font-bold">+12j</div>
+                        <p className="text-xs text-muted-foreground">+15% dari bulan lalu</p>
                     </CardContent>
                 </Card>
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Resources Accessed</CardTitle>
+                        <CardTitle className="text-sm font-medium">Sumber Daya Diakses</CardTitle>
                         <BookOpen className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">28</div>
-                        <p className="text-xs text-muted-foreground">5 new articles this week</p>
+                        <p className="text-xs text-muted-foreground">5 artikel baru minggu ini</p>
                     </CardContent>
                 </Card>
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Community Engagement</CardTitle>
+                        <CardTitle className="text-sm font-medium">Keterlibatan Komunitas</CardTitle>
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">+5 Posts</div>
-                        <p className="text-xs text-muted-foreground">Joined 1 new conversation</p>
+                        <div className="text-2xl font-bold">+5 Postingan</div>
+                        <p className="text-xs text-muted-foreground">Bergabung dalam 1 percakapan baru</p>
                     </CardContent>
                 </Card>
             </div>
@@ -160,9 +160,9 @@ export default function AnalyticsPage() {
             <div className="grid gap-6 lg:grid-cols-5">
                 <Card className="lg:col-span-3">
                     <CardHeader>
-                        <CardTitle>Mood & Anxiety Analysis</CardTitle>
+                        <CardTitle>Analisis Suasana Hati & Kecemasan</CardTitle>
                         <CardDescription>
-                            A daily log of your mood and anxiety levels (1: Low, 5: High).
+                            Catatan harian tingkat suasana hati dan kecemasan Anda (1: Rendah, 5: Tinggi).
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -202,8 +202,8 @@ export default function AnalyticsPage() {
 
                  <Card className="lg:col-span-2">
                     <CardHeader>
-                        <CardTitle>Activity Breakdown</CardTitle>
-                        <CardDescription>How you've been using the platform.</CardDescription>
+                        <CardTitle>Rincian Aktivitas</CardTitle>
+                        <CardDescription>Bagaimana Anda menggunakan platform ini.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex justify-center items-center h-[350px]">
                         <ChartContainer config={activityChartConfig} className="w-full">
@@ -233,11 +233,11 @@ export default function AnalyticsPage() {
             </div>
              <Card>
                 <CardHeader>
-                    <CardTitle>Resource Engagement</CardTitle>
-                    <CardDescription>Most viewed topics in the Resource Hub.</CardDescription>
+                    <CardTitle>Keterlibatan Sumber Daya</CardTitle>
+                    <CardDescription>Topik paling banyak dilihat di Pusat Sumber Daya.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                     <ChartContainer config={{ views: { label: "Views", color: "hsl(var(--chart-1))" } }} className="w-full h-[300px]">
+                     <ChartContainer config={{ views: { label: "Dilihat", color: "hsl(var(--chart-1))" } }} className="w-full h-[300px]">
                         <BarChart data={resourceData} margin={{ left: -20, right: 20, top: 10, bottom: 10 }}>
                             <CartesianGrid vertical={false} />
                             <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={8} />

@@ -12,21 +12,21 @@ import { specialists } from '@/data/specialists';
 import {z} from 'genkit';
 
 const FindSpecialistInputSchema = z.object({
-  complaint: z.string().describe('A description of the user\'s mental health concerns or what they are looking for in a therapist.'),
+  complaint: z.string().describe("Deskripsi keluhan kesehatan mental pengguna atau apa yang mereka cari dari seorang terapis."),
 });
 export type FindSpecialistInput = z.infer<typeof FindSpecialistInputSchema>;
 
 const RecommendedSpecialistSchema = z.object({
-  name: z.string().describe('The name of the recommended specialist.'),
-  title: z.string().describe('The professional title of the specialist.'),
-  specialties: z.array(z.string()).describe('A list of the specialist\'s areas of expertise.'),
-  bio: z.string().describe('A brief biography of the specialist.'),
-  imageUrl: z.string().describe('A URL to a photo of the specialist.'),
-  reason: z.string().describe('A detailed explanation of why this specialist is a good match for the user based on their complaint.'),
+  name: z.string().describe("Nama spesialis yang direkomendasikan."),
+  title: z.string().describe("Gelar profesional spesialis."),
+  specialties: z.array(z.string()).describe("Daftar bidang keahlian spesialis."),
+  bio: z.string().describe("Biografi singkat spesialis."),
+  imageUrl: z.string().describe("URL ke foto spesialis."),
+  reason: z.string().describe("Penjelasan rinci mengapa spesialis ini cocok untuk pengguna berdasarkan keluhan mereka."),
 });
 
 const FindSpecialistOutputSchema = z.object({
-  recommendations: z.array(RecommendedSpecialistSchema).describe('A list of up to 3 recommended specialists.'),
+  recommendations: z.array(RecommendedSpecialistSchema).describe("Daftar hingga 3 spesialis yang direkomendasikan."),
 });
 export type FindSpecialistOutput = z.infer<typeof FindSpecialistOutputSchema>;
 
@@ -39,20 +39,20 @@ const prompt = ai.definePrompt({
     name: 'findSpecialistPrompt',
     input: { schema: z.object({ complaint: z.string(), specialists: z.array(z.any()) }) },
     output: { schema: FindSpecialistOutputSchema },
-    prompt: `You are an expert AI assistant for Re-MindCare, a mental health platform for adolescents and young adults. Your task is to match a user with the most suitable mental health specialists from a provided list.
+    prompt: `Anda adalah asisten AI ahli untuk Re-MindCare, platform kesehatan mental untuk remaja dan dewasa muda. Tugas Anda adalah mencocokkan pengguna dengan spesialis kesehatan mental yang paling sesuai dari daftar yang disediakan.
 
-    Analyze the user's complaint carefully. Then, review the list of available specialists, paying close attention to their specialties and bios.
+    Analisis keluhan pengguna dengan cermat. Kemudian, tinjau daftar spesialis yang tersedia, perhatikan baik-baik spesialisasi dan bio mereka.
 
-    Select up to 3 specialists who are the best fit for the user's needs. For each recommendation, you MUST provide a clear and compassionate 'reason' explaining *why* they are a good match, directly referencing both the user's complaint and the specialist's expertise.
+    Pilih hingga 3 spesialis yang paling sesuai dengan kebutuhan pengguna. Untuk setiap rekomendasi, Anda HARUS memberikan 'alasan' yang jelas dan berbelas kasih yang menjelaskan *mengapa* mereka cocok, dengan merujuk langsung pada keluhan pengguna dan keahlian spesialis.
 
-    User's complaint: "{{complaint}}"
+    Keluhan pengguna: "{{complaint}}"
 
-    Available specialists:
+    Spesialis yang tersedia:
     \`\`\`json
     {{{json specialists}}}
     \`\`\`
 
-    Your response must be in the specified JSON format.
+    Respons Anda harus dalam format JSON yang ditentukan.
     `,
 });
 

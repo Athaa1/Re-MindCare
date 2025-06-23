@@ -25,8 +25,8 @@ export default function AiResourceTool() {
     if (!text.trim()) {
       toast({
         variant: "destructive",
-        title: "Input required",
-        description: "Please write something before getting suggestions.",
+        title: "Input diperlukan",
+        description: "Silakan tulis sesuatu sebelum mendapatkan saran.",
       });
       return;
     }
@@ -43,11 +43,11 @@ export default function AiResourceTool() {
       setSuggestions(result.suggestedResources);
     } catch (e) {
       console.error(e);
-      setError("Sorry, we couldn't get suggestions at this time. Please try again later.");
+      setError("Maaf, kami tidak bisa mendapatkan saran saat ini. Silakan coba lagi nanti.");
       toast({
         variant: "destructive",
-        title: "An error occurred",
-        description: "Failed to fetch AI suggestions.",
+        title: "Terjadi kesalahan",
+        description: "Gagal mengambil saran AI.",
       });
     } finally {
       setLoading(false);
@@ -62,15 +62,15 @@ export default function AiResourceTool() {
                 <Lightbulb className="w-6 h-6 text-accent-foreground" />
             </div>
             <div>
-                <CardTitle className="font-headline text-xl">AI Resource Suggestions</CardTitle>
-                <CardDescription>Share your thoughts to get personalized resources.</CardDescription>
+                <CardTitle className="font-headline text-xl">Saran Sumber Daya AI</CardTitle>
+                <CardDescription>Bagikan pemikiran Anda untuk mendapatkan sumber daya yang dipersonalisasi.</CardDescription>
             </div>
         </div>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent>
           <Textarea
-            placeholder="For example: 'I'm feeling anxious about my upcoming exams...'"
+            placeholder="Contoh: 'Saya merasa cemas tentang ujian yang akan datang...'"
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={5}
@@ -82,10 +82,10 @@ export default function AiResourceTool() {
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Analyzing...
+                Menganalisis...
               </>
             ) : (
-              "Get Suggestions"
+              "Dapatkan Saran"
             )}
           </Button>
         </CardFooter>
@@ -95,13 +95,13 @@ export default function AiResourceTool() {
         {error && (
             <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
+                <AlertTitle>Kesalahan</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
             </Alert>
         )}
         {suggestions && (
           <div>
-            <h3 className="mb-4 text-lg font-semibold font-headline">Here are some resources for you:</h3>
+            <h3 className="mb-4 text-lg font-semibold font-headline">Berikut adalah beberapa sumber daya untuk Anda:</h3>
             <div className="space-y-4">
               {suggestions.length > 0 ? (
                 suggestions.map((suggestion) => (
@@ -123,7 +123,7 @@ export default function AiResourceTool() {
                 ))
               ) : (
                 <p className="text-sm text-muted-foreground text-center py-4">
-                  No specific resources found, but feel free to browse our <Link href="/resources" className="underline text-primary">Resources</Link> page.
+                  Tidak ditemukan sumber daya spesifik, tetapi jangan ragu untuk menjelajahi halaman <Link href="/resources" className="underline text-primary">Sumber Daya</Link> kami.
                 </p>
               )}
             </div>

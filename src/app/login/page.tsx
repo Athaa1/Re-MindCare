@@ -14,9 +14,9 @@ export default function LoginPage() {
           <div className="flex justify-center mb-4">
             <BrainCircuit className="h-10 w-10 text-primary" />
           </div>
-          <CardTitle className="text-2xl text-center">Login</CardTitle>
+          <CardTitle className="text-2xl text-center">Masuk</CardTitle>
           <CardDescription className="text-center">
-            Enter your email below to login to your account
+            Masukkan email Anda di bawah ini untuk masuk ke akun Anda
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -32,12 +32,12 @@ export default function LoginPage() {
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Kata Sandi</Label>
               </div>
               <Input id="password" type="password" required />
             </div>
             <Button asChild className="w-full">
-              <Link href="/dashboard">Login</Link>
+              <Link href="/dashboard">Masuk</Link>
             </Button>
           </div>
         </CardContent>

@@ -18,21 +18,21 @@ import Link from "next/link";
 const appointments = [
     {
         name: "Dr. Anya Sharma",
-        specialty: "Clinical Psychologist",
+        specialty: "Psikolog Klinis",
         date: "2024-07-25",
         time: "14:30",
         avatar: "https://placehold.co/40x40.png"
     },
     {
         name: "David Chen",
-        specialty: "LCSW, Counselor",
+        specialty: "Pekerja Sosial Klinis, Konselor",
         date: "2024-07-28",
         time: "11:00",
         avatar: "https://placehold.co/40x40.png"
     },
     {
         name: "Dr. Emily Carter",
-        specialty: "Adolescent Psychiatry",
+        specialty: "Psikiater Remaja",
         date: "2024-08-02",
         time: "16:00",
         avatar: "https://placehold.co/40x40.png"
@@ -43,9 +43,9 @@ export function UpcomingAppointments() {
   return (
     <Card className="col-span-4 lg:col-span-3">
         <CardHeader>
-            <CardTitle>Upcoming Appointments</CardTitle>
+            <CardTitle>Janji Temu Mendatang</CardTitle>
             <CardDescription>
-            You have {appointments.length} upcoming sessions.
+            Anda memiliki {appointments.length} sesi mendatang.
             </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
@@ -62,7 +62,7 @@ export function UpcomingAppointments() {
                     <div className="text-right">
                         <div className="flex items-center justify-end gap-2 text-sm">
                            <Calendar className="h-4 w-4" />
-                           {new Date(appt.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                           {new Date(appt.date).toLocaleDateString('id-ID', { month: 'short', day: 'numeric' })}
                         </div>
                          <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground">
                             <Clock className="h-3 w-3" />
@@ -72,7 +72,7 @@ export function UpcomingAppointments() {
                 </div>
             ))}
              <Button variant="outline" asChild className="mt-4">
-                <Link href="/dashboard/appointments">View All Appointments</Link>
+                <Link href="/dashboard/appointments">Lihat Semua Janji Temu</Link>
             </Button>
         </CardContent>
     </Card>

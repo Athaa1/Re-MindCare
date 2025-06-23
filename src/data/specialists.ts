@@ -10,33 +10,33 @@ export type Specialist = {
 export const specialists: Specialist[] = [
   {
     name: "Dr. Anya Sharma",
-    title: "Clinical Psychologist, PhD",
-    specialties: ["Anxiety", "Depression", "Trauma", "CBT"],
-    bio: "Dr. Sharma specializes in cognitive-behavioral therapy (CBT) for adolescents and young adults facing anxiety and depression.",
+    title: "Psikolog Klinis, PhD",
+    specialties: ["Kecemasan", "Depresi", "Trauma", "CBT"],
+    bio: "Dr. Sharma berspesialisasi dalam terapi perilaku kognitif (CBT) untuk remaja dan dewasa muda yang menghadapi kecemasan dan depresi.",
     imageUrl: "https://placehold.co/100x100.png",
     imageHint: "female psychologist portrait"
   },
   {
     name: "David Chen",
-    title: "Licensed Clinical Social Worker (LCSW)",
-    specialties: ["Stress Management", "Relationships", "Life Transitions", "Mindfulness"],
-    bio: "David Chen focuses on mindfulness-based stress reduction and helps young people navigate relationship challenges and major life changes.",
+    title: "Pekerja Sosial Klinis Berlisensi (LCSW)",
+    specialties: ["Manajemen Stres", "Hubungan", "Transisi Kehidupan", "Kesadaran"],
+    bio: "David Chen berfokus pada pengurangan stres berbasis kesadaran dan membantu kaum muda menavigasi tantangan hubungan dan perubahan besar dalam hidup.",
     imageUrl: "https://placehold.co/100x100.png",
     imageHint: "male therapist portrait"
   },
   {
     name: "Dr. Emily Carter",
-    title: "Adolescent Psychiatrist, MD",
-    specialties: ["ADHD", "Mood Disorders", "Medication Management", "Behavioral Issues"],
-    bio: "Dr. Carter is a psychiatrist with expertise in medication management and treatment for mood disorders and ADHD in teenagers.",
+    title: "Psikiater Remaja, MD",
+    specialties: ["ADHD", "Gangguan Mood", "Manajemen Obat", "Masalah Perilaku"],
+    bio: "Dr. Carter adalah seorang psikiater dengan keahlian dalam manajemen pengobatan dan perawatan untuk gangguan suasana hati dan ADHD pada remaja.",
     imageUrl: "https://placehold.co/100x100.png",
     imageHint: "female psychiatrist portrait"
   },
   {
     name: "Samuel Jones",
-    title: "Marriage and Family Therapist (MFT)",
-    specialties: ["Family Conflict", "Communication", "School Issues", "Self-Esteem"],
-    bio: "Samuel Jones works with teens and their families to improve communication, resolve conflicts, and build self-esteem.",
+    title: "Terapis Pernikahan dan Keluarga (MFT)",
+    specialties: ["Konflik Keluarga", "Komunikasi", "Masalah Sekolah", "Harga Diri"],
+    bio: "Samuel Jones bekerja dengan remaja dan keluarga mereka untuk meningkatkan komunikasi, menyelesaikan konflik, dan membangun harga diri.",
     imageUrl: "https://placehold.co/100x100.png",
     imageHint: "male counselor portrait"
   },

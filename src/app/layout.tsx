@@ -7,7 +7,7 @@ import PageWrapper from "@/components/layout/PageWrapper";
 
 export const metadata: Metadata = {
   title: "Re-MindCare",
-  description: "Your Path to Mental Wellness",
+  description: "Jalan Anda Menuju Kesehatan Mental",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

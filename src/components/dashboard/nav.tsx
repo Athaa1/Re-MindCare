@@ -8,9 +8,9 @@ import { Home, LineChart, Settings, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-    { href: "/dashboard", label: "Overview", icon: Home },
-    { href: "/dashboard/analytics", label: "Analytics", icon: LineChart },
-    { href: "/dashboard/settings", label: "Settings", icon: Settings },
+    { href: "/dashboard", label: "Ringkasan", icon: Home },
+    { href: "/dashboard/analytics", label: "Analitik", icon: LineChart },
+    { href: "/dashboard/settings", label: "Pengaturan", icon: Settings },
 ]
 
 export function DashboardNav() {
