@@ -16,6 +16,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "../ui/input";
+import { useAuth } from "@/hooks/use-auth";
 
 const navLinks = [
   { href: "/", label: "Beranda" },
@@ -27,6 +28,7 @@ const navLinks = [
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  const { logout } = useAuth();
   const isDashboard = pathname.startsWith('/dashboard');
 
   if (isDashboard) {
@@ -93,7 +95,7 @@ export function Header() {
                 <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/dashboard/settings')}>Pengaturan</DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">Dukungan</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/login')}>Keluar</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={logout}>Keluar</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </header>
