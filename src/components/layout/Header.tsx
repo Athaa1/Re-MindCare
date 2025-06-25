@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BrainCircuit, Menu, Search, UserCircle, Sparkles, Home, LineChart, Settings, Users, CalendarDays } from "lucide-react";
+import { BrainCircuit, Menu, Search, UserCircle, Sparkles, Home, LineChart, Settings, Users, CalendarDays, MessageSquare } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -35,6 +35,7 @@ const doctorDashboardLinks = [
     { href: "/doctor/dashboard", label: "Ringkasan", icon: Home },
     { href: "/doctor/dashboard/patients", label: "Pasien", icon: Users },
     { href: "/doctor/dashboard/schedule", label: "Jadwal", icon: CalendarDays },
+    { href: "/doctor/dashboard/messages", label: "Pesan", icon: MessageSquare },
     { href: "/doctor/dashboard/settings", label: "Pengaturan", icon: Settings },
 ];
 

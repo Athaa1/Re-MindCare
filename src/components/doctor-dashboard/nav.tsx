@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Home, Users, CalendarDays, Settings, Package } from "lucide-react";
+import { Home, Users, CalendarDays, Settings, Package, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
     { href: "/doctor/dashboard", label: "Ringkasan", icon: Home },
     { href: "/doctor/dashboard/patients", label: "Pasien", icon: Users },
     { href: "/doctor/dashboard/schedule", label: "Jadwal", icon: CalendarDays },
+    { href: "/doctor/dashboard/messages", label: "Pesan", icon: MessageSquare },
     { href: "/doctor/dashboard/settings", label: "Pengaturan", icon: Settings },
 ]
 
