@@ -1,160 +1,98 @@
 
-'use client';
+import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from '@/components/ui/badge';
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
-import { useState, useEffect, useRef } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Send } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
-
-// Data dummy untuk dokter dan pasien
-const doctor = {
-    name: 'Dr. Anya Sharma',
-    imageUrl: 'https://placehold.co/100x100.png',
-    imageHint: 'female psychologist portrait',
-};
-
-const patient = {
-    name: 'Alex R.',
-    imageUrl: 'https://placehold.co/40x40.png',
-    imageHint: 'person portrait',
-};
-
-type Message = {
-  sender: 'user' | 'doctor';
-  text: string;
-  timestamp: string;
-};
-
-// Data dummy untuk percakapan
-const initialMessages: Message[] = [
+const conversations = [
   {
-    sender: 'user',
-    text: 'Halo, Dok. Akhir-akhir ini saya merasa sangat cemas dengan sekolah dan sulit untuk fokus pada tugas-tugas saya. Rasanya kewalahan.',
-    timestamp: "09:01",
+    id: "alex-r",
+    name: "Alex R.",
+    lastMessage: "Terima kasih, Dok. Saya akan mencoba untuk mengingat itu.",
+    timestamp: "10 menit yang lalu",
+    unread: 2,
+    avatarUrl: "https://placehold.co/40x40.png",
+    avatarHint: "person portrait"
   },
   {
-      sender: 'doctor',
-      text: 'Halo Alex. Terima kasih sudah berbagi. Saya mengerti perasaan kewalahan itu bisa sangat mengganggu. Bisa ceritakan lebih lanjut apa yang membuat Anda merasa cemas terkait sekolah?',
-      timestamp: "09:02"
+    id: "jamie-l",
+    name: "Jamie L.",
+    lastMessage: "Sesi terakhir sangat membantu. Kapan kita bisa...",
+    timestamp: "1 jam yang lalu",
+    unread: 0,
+    avatarUrl: "https://placehold.co/40x40.png",
+    avatarHint: "person portrait"
   },
   {
-    sender: 'user',
-    text: 'Tumpukan tugas, ujian yang akan datang, dan ekspektasi dari orang tua saya. Rasanya semua menumpuk jadi satu.',
-    timestamp: "09:05",
-  }
+    id: "sam-k",
+    name: "Sam K.",
+    lastMessage: "Saya punya pertanyaan tentang kecemasan sosial.",
+    timestamp: "3 jam yang lalu",
+    unread: 1,
+    avatarUrl: "https://placehold.co/40x40.png",
+    avatarHint: "person portrait"
+  },
+  {
+    id: "casey-b",
+    name: "Casey B.",
+    lastMessage: "Oke, saya mengerti.",
+    timestamp: "1 hari yang lalu",
+    unread: 0,
+    avatarUrl: "https://placehold.co/40x40.png",
+    avatarHint: "person portrait"
+  },
+   {
+    id: "jordan-p",
+    name: "Jordan P.",
+    lastMessage: "Saya merasa lebih baik hari ini.",
+    timestamp: "3 hari yang lalu",
+    unread: 0,
+    avatarUrl: "https://placehold.co/40x40.png",
+    avatarHint: "person portrait"
+  },
 ];
 
-export default function DoctorMessagesPage() {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [newMessage, setNewMessage] = useState('');
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Scroll ke bawah saat pesan baru ditambahkan
-    if (scrollAreaRef.current) {
-        const viewport = scrollAreaRef.current.querySelector('div');
-        if(viewport) {
-            viewport.scrollTop = viewport.scrollHeight;
-        }
-    }
-  }, [messages]);
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newMessage.trim() === '') return;
-
-    const doctorMessage: Message = {
-      sender: 'doctor',
-      text: newMessage,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    setMessages([...messages, doctorMessage]);
-    setNewMessage('');
-    
-    // Simulasi respons pasien
-    setTimeout(() => {
-        const userResponse: Message = {
-            sender: 'user',
-            text: 'Terima kasih, Dok. Saya akan mencoba untuk mengingat itu.',
-            timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-        };
-        setMessages(prev => [...prev, userResponse]);
-    }, 1500);
-  };
-
+export default function MessagesListPage() {
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
-        <Card className="flex flex-col flex-1 w-full max-w-4xl mx-auto">
-            <CardHeader className="flex flex-row items-center gap-4 p-4 border-b">
-                <Avatar className="h-12 w-12 border">
-                    <AvatarImage src={patient.imageUrl} alt={patient.name} data-ai-hint={patient.imageHint} />
-                    <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                    <h1 className="text-lg font-bold">{patient.name}</h1>
-                    <p className="text-sm text-muted-foreground">Konsultasi mengenai Kecemasan Sekolah</p>
-                </div>
-            </CardHeader>
-            <CardContent className="flex-1 p-0">
-                <ScrollArea className="h-full p-6" ref={scrollAreaRef}>
-                    <div className="space-y-4">
-                        {messages.map((msg, index) => (
-                            <div
-                                key={index}
-                                className={`flex items-end gap-2 ${msg.sender === 'doctor' ? 'justify-end' : 'justify-start'}`}
-                            >
-                                {msg.sender === 'user' && (
-                                    <Avatar className="h-8 w-8 self-start">
-                                        <AvatarImage src={patient.imageUrl} alt={patient.name} data-ai-hint={patient.imageHint} />
-                                        <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                )}
-                                <div className={`max-w-xs md:max-w-md lg:max-w-lg p-3 rounded-xl ${
-                                    msg.sender === 'doctor' 
-                                    ? 'bg-primary text-primary-foreground rounded-br-none' 
-                                    : 'bg-muted rounded-bl-none'
-                                }`}>
-                                    <p className="text-sm">{msg.text}</p>
-                                    <p className={`text-xs mt-1 text-right ${
-                                        msg.sender === 'doctor' ? 'text-primary-foreground/70' : 'text-muted-foreground'
-                                    }`}>{msg.timestamp}</p>
+    <div className="flex flex-col h-[calc(100vh-8rem)] bg-background">
+        <div className="p-4 border-b">
+            <h1 className="text-2xl font-bold">Pesan</h1>
+            <div className="relative mt-4">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input placeholder="Cari percakapan..." className="pl-8" />
+            </div>
+        </div>
+        <div className="flex-1 overflow-y-auto">
+            <div className="space-y-0">
+                {conversations.map((convo) => (
+                    <Link key={convo.id} href={`/doctor/dashboard/messages/${convo.id}`} className="block">
+                        <Card className="rounded-none border-x-0 border-t-0 hover:bg-accent transition-colors">
+                            <CardContent className="p-4 flex items-center gap-4">
+                                <Avatar className="h-12 w-12 border">
+                                    <AvatarImage src={convo.avatarUrl} alt={convo.name} data-ai-hint={convo.avatarHint} />
+                                    <AvatarFallback>{convo.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 overflow-hidden">
+                                    <div className="flex justify-between items-center">
+                                        <p className="font-semibold">{convo.name}</p>
+                                        <p className="text-xs text-muted-foreground whitespace-nowrap">{convo.timestamp}</p>
+                                    </div>
+                                    <div className="flex justify-between items-start mt-1">
+                                        <p className="text-sm text-muted-foreground truncate">{convo.lastMessage}</p>
+                                        {convo.unread > 0 && (
+                                            <Badge className="h-6 w-6 flex items-center justify-center p-0 shrink-0">{convo.unread}</Badge>
+                                        )}
+                                    </div>
                                 </div>
-                                {msg.sender === 'doctor' && (
-                                    <Avatar className="h-8 w-8 self-start">
-                                        <AvatarImage src={doctor.imageUrl} alt={doctor.name} data-ai-hint={doctor.imageHint} />
-                                        <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                    </Avatar>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </ScrollArea>
-            </CardContent>
-            <CardFooter className="p-4 border-t bg-background">
-                <form onSubmit={handleSendMessage} className="flex w-full items-center gap-2">
-                    <Textarea
-                        placeholder="Ketik balasan Anda..."
-                        className="flex-1 resize-none"
-                        rows={1}
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                e.preventDefault();
-                                handleSendMessage(e);
-                            }
-                        }}
-                    />
-                    <Button type="submit" size="icon" aria-label="Kirim Pesan">
-                        <Send className="h-4 w-4" />
-                    </Button>
-                </form>
-            </CardFooter>
-        </Card>
+                            </CardContent>
+                        </Card>
+                    </Link>
+                ))}
+            </div>
+        </div>
     </div>
   );
 }

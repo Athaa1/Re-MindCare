@@ -1,3 +1,4 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -5,10 +6,10 @@ import Link from "next/link";
 import { MessageSquare } from "lucide-react";
 
 const patients = [
-    { name: "Alex R.", lastContact: "Baru saja", avatar: "https://placehold.co/40x40.png" },
-    { name: "Casey B.", lastContact: "1 hari yang lalu", avatar: "https://placehold.co/40x40.png" },
-    { name: "Jordan P.", lastContact: "3 hari yang lalu", avatar: "https://placehold.co/40x40.png" },
-    { name: "Morgan W.", lastContact: "5 hari yang lalu", avatar: "https://placehold.co/40x40.png" },
+    { id: "alex-r", name: "Alex R.", lastContact: "Baru saja", avatar: "https://placehold.co/40x40.png" },
+    { id: "casey-b", name: "Casey B.", lastContact: "1 hari yang lalu", avatar: "https://placehold.co/40x40.png" },
+    { id: "jordan-p", name: "Jordan P.", lastContact: "3 hari yang lalu", avatar: "https://placehold.co/40x40.png" },
+    { id: "sam-k", name: "Sam K.", lastContact: "5 hari yang lalu", avatar: "https://placehold.co/40x40.png" },
 ]
 
 export function RecentPatients() {
@@ -30,7 +31,7 @@ export function RecentPatients() {
                         <p className="text-sm text-muted-foreground">{patient.lastContact}</p>
                     </div>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href="/doctor/dashboard/messages">
+                      <Link href={`/doctor/dashboard/messages/${patient.id}`}>
                         <MessageSquare className="h-4 w-4 mr-2" />
                         Pesan
                       </Link>
