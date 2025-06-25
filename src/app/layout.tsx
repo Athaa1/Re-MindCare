@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Re-MindCare",
   description: "Jalan Anda Menuju Kesehatan Mental",
   icons: { 
-    icon: "/brain-circuit.svg",
+    icon: "/brain-circuit.png",
   },
 };
 
