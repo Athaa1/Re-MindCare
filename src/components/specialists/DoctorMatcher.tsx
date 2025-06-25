@@ -127,9 +127,11 @@ export default function DoctorMatcher() {
                                 </AlertDescription>
                             </Alert>
 
-                            <Button className="mt-4 w-full md:w-auto">
-                                <MessageSquare />
-                                Hubungi {specialist.name}
+                             <Button asChild className="mt-4 w-full md:w-auto">
+                                <Link href={`/consultation/${specialist.id}`}>
+                                    <MessageSquare />
+                                    Hubungi {specialist.name}
+                                </Link>
                             </Button>
 
                         </div>

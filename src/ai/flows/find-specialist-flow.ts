@@ -17,6 +17,7 @@ const FindSpecialistInputSchema = z.object({
 export type FindSpecialistInput = z.infer<typeof FindSpecialistInputSchema>;
 
 const RecommendedSpecialistSchema = z.object({
+  id: z.string().describe("ID unik spesialis."),
   name: z.string().describe("Nama spesialis yang direkomendasikan."),
   title: z.string().describe("Gelar profesional spesialis."),
   specialties: z.array(z.string()).describe("Daftar bidang keahlian spesialis."),
@@ -43,7 +44,7 @@ const prompt = ai.definePrompt({
 
     Analisis keluhan pengguna dengan cermat. Kemudian, tinjau daftar spesialis yang tersedia, perhatikan baik-baik spesialisasi dan bio mereka.
 
-    Pilih hingga 3 spesialis yang paling sesuai dengan kebutuhan pengguna. Untuk setiap rekomendasi, Anda HARUS memberikan 'alasan' yang jelas dan berbelas kasih yang menjelaskan *mengapa* mereka cocok, dengan merujuk langsung pada keluhan pengguna dan keahlian spesialis.
+    Pilih hingga 3 spesialis yang paling sesuai dengan kebutuhan pengguna. Untuk setiap rekomendasi, Anda HARUS memberikan 'alasan' yang jelas dan berbelas kasih yang menjelaskan *mengapa* mereka cocok, dengan merujuk langsung pada keluhan pengguna dan keahlian spesialis. Pastikan untuk menyertakan ID spesialis.
 
     Keluhan pengguna: "{{complaint}}"
 

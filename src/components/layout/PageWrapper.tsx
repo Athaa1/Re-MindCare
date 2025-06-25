@@ -10,8 +10,9 @@ export default function PageWrapper({ children }: { children: React.ReactNode })
     const isUserDashboard = pathname.startsWith('/dashboard');
     const isDoctorDashboard = pathname.startsWith('/doctor/dashboard');
     const isLoginOrRegister = pathname === '/login' || pathname === '/register';
+    const isConsultation = pathname.startsWith('/consultation');
 
-    if (isUserDashboard || isDoctorDashboard || isLoginOrRegister) {
+    if (isUserDashboard || isDoctorDashboard || isLoginOrRegister || isConsultation) {
         return <>{children}</>;
     }
 

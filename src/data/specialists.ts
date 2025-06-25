@@ -1,4 +1,5 @@
 export type Specialist = {
+  id: string;
   name: string;
   title: string;
   specialties: string[];
@@ -9,6 +10,7 @@ export type Specialist = {
 
 export const specialists: Specialist[] = [
   {
+    id: "1",
     name: "Dr. Anya Sharma",
     title: "Psikolog Klinis, PhD",
     specialties: ["Kecemasan", "Depresi", "Trauma", "CBT"],
@@ -17,6 +19,7 @@ export const specialists: Specialist[] = [
     imageHint: "female psychologist portrait"
   },
   {
+    id: "2",
     name: "David Chen",
     title: "Pekerja Sosial Klinis Berlisensi (LCSW)",
     specialties: ["Manajemen Stres", "Hubungan", "Transisi Kehidupan", "Kesadaran"],
@@ -25,6 +28,7 @@ export const specialists: Specialist[] = [
     imageHint: "male therapist portrait"
   },
   {
+    id: "3",
     name: "Dr. Emily Carter",
     title: "Psikiater Remaja, MD",
     specialties: ["ADHD", "Gangguan Mood", "Manajemen Obat", "Masalah Perilaku"],
@@ -33,6 +37,7 @@ export const specialists: Specialist[] = [
     imageHint: "female psychiatrist portrait"
   },
   {
+    id: "4",
     name: "Samuel Jones",
     title: "Terapis Pernikahan dan Keluarga (MFT)",
     specialties: ["Konflik Keluarga", "Komunikasi", "Masalah Sekolah", "Harga Diri"],
