@@ -25,18 +25,27 @@ export function useAuth() {
 
   useEffect(() => {
     try {
-        const storedUsers = localStorage.getItem('dummy_users');
-        const allUsers = storedUsers ? JSON.parse(storedUsers) : initialUsers;
+        const storedUsersRaw = localStorage.getItem('dummy_users');
+        const storedUsers = storedUsersRaw ? JSON.parse(storedUsersRaw) : [];
+
+        // Create a map from stored users
+        const combinedUsersMap = new Map(storedUsers.map((u: User) => [u.email, u]));
+
+        // Merge initial users from code, overwriting any with the same email
+        initialUsers.forEach(initialUser => {
+            combinedUsersMap.set(initialUser.email, initialUser);
+        });
+
+        const allUsers = Array.from(combinedUsersMap.values());
+
         setUsers(allUsers);
-        if (!storedUsers) {
-            localStorage.setItem('dummy_users', JSON.stringify(initialUsers));
-        }
+        localStorage.setItem('dummy_users', JSON.stringify(allUsers));
 
         const sessionUser = localStorage.getItem('dummy_session');
         if (sessionUser) {
-        setCurrentUser(JSON.parse(sessionUser));
+            setCurrentUser(JSON.parse(sessionUser));
         } else {
-        setCurrentUser(null);
+            setCurrentUser(null);
         }
     } catch (error) {
         console.error("Could not access localStorage. Auth features will be limited.");
