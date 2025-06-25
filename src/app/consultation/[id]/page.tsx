@@ -36,7 +36,17 @@ export default function ConsultationPage() {
         {
           sender: 'doctor',
           text: `Halo! Saya ${foundSpecialist.name}. Silakan ceritakan apa yang Anda rasakan. Saya di sini untuk mendengarkan.`,
-          timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+          timestamp: "09:00",
+        },
+        {
+          sender: 'user',
+          text: 'Halo, Dok. Akhir-akhir ini saya merasa sangat cemas dengan sekolah dan sulit untuk fokus pada tugas-tugas saya. Rasanya kewalahan.',
+          timestamp: "09:01",
+        },
+        {
+            sender: 'doctor',
+            text: 'Terima kasih sudah berbagi. Saya mengerti perasaan kewalahan itu bisa sangat mengganggu. Bisa ceritakan lebih lanjut apa yang membuat Anda merasa cemas terkait sekolah?',
+            timestamp: "09:02"
         }
       ]);
     }
@@ -69,7 +79,7 @@ export default function ConsultationPage() {
     setTimeout(() => {
         const doctorResponse: Message = {
             sender: 'doctor',
-            text: 'Terima kasih telah berbagi. Saya memahami apa yang Anda rasakan. Bisakah Anda ceritakan lebih lanjut?',
+            text: 'Saya mengerti. Terima kasih telah menjelaskannya. Bagaimana perasaan Anda setelah menceritakan ini?',
             timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
         };
         setMessages(prev => [...prev, doctorResponse]);
@@ -157,4 +167,3 @@ export default function ConsultationPage() {
     </div>
   );
 }
-
