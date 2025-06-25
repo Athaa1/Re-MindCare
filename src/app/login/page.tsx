@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -41,8 +40,10 @@ export default function LoginPage() {
             </Button>
             <Button variant="outline" asChild className="w-full">
               <Link href="/">
-                <ArrowLeft />
-                Kembali ke Beranda
+                <>
+                  <ArrowLeft />
+                  Kembali ke Beranda
+                </>
               </Link>
             </Button>
           </div>
