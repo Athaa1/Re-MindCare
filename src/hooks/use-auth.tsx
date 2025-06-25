@@ -13,8 +13,8 @@ type User = {
 };
 
 const initialUsers: User[] = [
-    { id: '1', name: 'Admin User', email: 'admin@example.com', password_DO_NOT_USE_IN_PROD: 'password123', role: 'user' },
-    { id: '2', name: 'Dr. Anya Sharma', email: 'anya.sharma@example.com', password_DO_NOT_USE_IN_PROD: 'doctorpass', role: 'doctor' }
+    { id: '1', name: 'Admin User', email: 'user@example.com', password_DO_NOT_USE_IN_PROD: '123123', role: 'user' },
+    { id: '2', name: 'Dr. Anya Sharma', email: 'anya.sharma@example.com', password_DO_NOT_USE_IN_PROD: '123123', role: 'doctor' }
 ];
 
 export function useAuth() {
