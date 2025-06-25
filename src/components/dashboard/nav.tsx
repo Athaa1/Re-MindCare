@@ -1,14 +1,16 @@
+
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Home, LineChart, Settings, BrainCircuit } from "lucide-react";
+import { Home, LineChart, Settings, BrainCircuit, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
     { href: "/dashboard", label: "Ringkasan", icon: Home },
     { href: "/dashboard/analytics", label: "Analitik", icon: LineChart },
+    { href: "/dashboard/appointments", label: "Janji Temu", icon: CalendarDays },
     { href: "/dashboard/settings", label: "Pengaturan", icon: Settings },
 ]
 

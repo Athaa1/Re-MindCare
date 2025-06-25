@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -28,6 +29,7 @@ const mainNavLinks = [
 const userDashboardLinks = [
     { href: "/dashboard", label: "Ringkasan", icon: Home },
     { href: "/dashboard/analytics", label: "Analitik", icon: LineChart },
+    { href: "/dashboard/appointments", label: "Janji Temu", icon: CalendarDays },
     { href: "/dashboard/settings", label: "Pengaturan", icon: Settings },
 ];
 
