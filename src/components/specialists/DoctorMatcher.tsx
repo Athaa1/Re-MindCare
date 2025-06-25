@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, AlertCircle, Sparkles, UserCheck, MessageSquare } from "lucide-react";
+import { Loader2, AlertCircle, Sparkles, UserCheck, MessageSquare, CalendarPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import ScheduleAppointmentDialog from "@/components/appointments/ScheduleAppointmentDialog";
 
 type RecommendedSpecialist = FindSpecialistOutput["recommendations"][0];
 
@@ -50,6 +51,10 @@ export default function DoctorMatcher() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAppointmentScheduled = () => {
+    // No-op, the dialog handles the toast.
   };
 
   return (
@@ -127,12 +132,23 @@ export default function DoctorMatcher() {
                                 </AlertDescription>
                             </Alert>
 
-                             <Button asChild className="mt-4 w-full md:w-auto">
-                                <Link href={`/consultation/${specialist.id}`}>
-                                    <MessageSquare />
-                                    Hubungi {specialist.name}
-                                </Link>
-                            </Button>
+                             <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                                <Button asChild className="w-full sm:w-auto flex-grow">
+                                    <Link href={`/consultation/${specialist.id}`}>
+                                        <MessageSquare className="mr-2 h-4 w-4" />
+                                        Hubungi Sekarang
+                                    </Link>
+                                </Button>
+                                <ScheduleAppointmentDialog
+                                    specialistId={specialist.id}
+                                    onAppointmentScheduled={handleAppointmentScheduled}
+                                >
+                                    <Button variant="outline" className="w-full sm:w-auto flex-grow">
+                                        <CalendarPlus className="mr-2 h-4 w-4" />
+                                        Jadwalkan Janji Temu
+                                    </Button>
+                                </ScheduleAppointmentDialog>
+                            </div>
 
                         </div>
                     </Card>
