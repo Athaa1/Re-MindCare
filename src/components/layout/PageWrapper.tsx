@@ -7,10 +7,11 @@ import { Footer } from "@/components/layout/Footer";
 
 export default function PageWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const isDashboard = pathname.startsWith('/dashboard');
-    const isLogin = pathname === '/login';
+    const isUserDashboard = pathname.startsWith('/dashboard');
+    const isDoctorDashboard = pathname.startsWith('/doctor/dashboard');
+    const isLoginOrRegister = pathname === '/login' || pathname === '/register';
 
-    if (isDashboard || isLogin) {
+    if (isUserDashboard || isDoctorDashboard || isLoginOrRegister) {
         return <>{children}</>;
     }
 

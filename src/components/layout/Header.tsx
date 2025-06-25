@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BrainCircuit, Menu, Search, UserCircle, Sparkles } from "lucide-react";
+import { BrainCircuit, Menu, Search, UserCircle, Sparkles, Home, LineChart, Settings, Users, CalendarDays } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -18,20 +18,38 @@ import {
 import { Input } from "../ui/input";
 import { useAuth } from "@/hooks/use-auth";
 
-const navLinks = [
+const mainNavLinks = [
   { href: "/", label: "Beranda" },
   { href: "/services", label: "Cari Spesialis" },
   { href: "/resources", label: "Sumber Daya" },
   { href: "/forum", label: "Forum Komunitas" },
 ];
 
+const userDashboardLinks = [
+    { href: "/dashboard", label: "Ringkasan", icon: Home },
+    { href: "/dashboard/analytics", label: "Analitik", icon: LineChart },
+    { href: "/dashboard/settings", label: "Pengaturan", icon: Settings },
+];
+
+const doctorDashboardLinks = [
+    { href: "/doctor/dashboard", label: "Ringkasan", icon: Home },
+    { href: "/doctor/dashboard/patients", label: "Pasien", icon: Users },
+    { href: "/doctor/dashboard/schedule", label: "Jadwal", icon: CalendarDays },
+    { href: "/doctor/dashboard/settings", label: "Pengaturan", icon: Settings },
+];
+
+
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const { logout } = useAuth();
-  const isDashboard = pathname.startsWith('/dashboard');
+  const { currentUser, logout } = useAuth();
+  const isUserDashboard = pathname.startsWith('/dashboard');
+  const isDoctorDashboard = pathname.startsWith('/doctor/dashboard');
 
-  if (isDashboard) {
+  if (isUserDashboard || isDoctorDashboard) {
+    const isDoctor = currentUser?.role === 'doctor';
+    const mobileNavLinks = isDoctor ? doctorDashboardLinks : userDashboardLinks;
+
     return (
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <Sheet>
@@ -44,30 +62,25 @@ export function Header() {
                 <SheetContent side="left" className="sm:max-w-xs">
                 <nav className="grid gap-6 text-lg font-medium">
                     <Link
-                        href="#"
+                        href={isDoctor ? "/doctor/dashboard" : "/dashboard"}
                         className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
                     >
                         <BrainCircuit className="h-5 w-5 transition-all group-hover:scale-110" />
                         <span className="sr-only">Re-MindCare</span>
                     </Link>
-                    <Link
-                        href="/dashboard"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        Dasbor
-                    </Link>
-                    <Link
-                        href="/dashboard/analytics"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        Analitik
-                    </Link>
-                    <Link
-                        href="/dashboard/settings"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        Pengaturan
-                    </Link>
+                    {mobileNavLinks.map(({ href, label, icon: Icon }) => (
+                         <Link
+                            key={href}
+                            href={href}
+                            className={cn(
+                                "flex items-center gap-4 px-2.5",
+                                pathname === href ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                            )}
+                        >
+                            <Icon className="h-5 w-5" />
+                            {label}
+                        </Link>
+                    ))}
                 </nav>
                 </SheetContent>
             </Sheet>
@@ -92,7 +105,7 @@ export function Header() {
                 <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/dashboard/settings')}>Pengaturan</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(isDoctor ? '/doctor/dashboard/settings' : '/dashboard/settings')}>Pengaturan</DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">Dukungan</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer" onClick={logout}>Keluar</DropdownMenuItem>
@@ -110,7 +123,7 @@ export function Header() {
           <span className="font-bold inline-block font-headline">Re-MindCare</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          {navLinks.map(({ href, label }) => (
+          {mainNavLinks.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
@@ -143,7 +156,7 @@ export function Header() {
                         <span className="font-bold inline-block font-headline">Re-MindCare</span>
                     </Link>
                     <nav className="grid gap-4">
-                        {navLinks.map(({ href, label }) => (
+                        {mainNavLinks.map(({ href, label }) => (
                         <Link
                             key={href}
                             href={href}

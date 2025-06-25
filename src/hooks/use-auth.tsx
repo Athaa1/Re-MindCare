@@ -9,10 +9,12 @@ type User = {
   name: string;
   email: string;
   password_DO_NOT_USE_IN_PROD: string;
+  role: 'user' | 'doctor';
 };
 
 const initialUsers: User[] = [
-    { id: '1', name: 'Admin User', email: 'admin@example.com', password_DO_NOT_USE_IN_PROD: 'password123' }
+    { id: '1', name: 'Admin User', email: 'admin@example.com', password_DO_NOT_USE_IN_PROD: 'password123', role: 'user' },
+    { id: '2', name: 'Dr. Anya Sharma', email: 'anya.sharma@example.com', password_DO_NOT_USE_IN_PROD: 'doctorpass', role: 'doctor' }
 ];
 
 export function useAuth() {
@@ -53,7 +55,12 @@ export function useAuth() {
         title: 'Login Berhasil',
         description: `Selamat datang kembali, ${user.name}!`,
       });
-      router.push('/dashboard');
+      
+      if (user.role === 'doctor') {
+        router.push('/doctor/dashboard');
+      } else {
+        router.push('/dashboard');
+      }
       return true;
     } else {
       toast({
@@ -81,6 +88,7 @@ export function useAuth() {
       name,
       email,
       password_DO_NOT_USE_IN_PROD: password,
+      role: 'user', // Default role for new registrations
     };
 
     const updatedUsers = [...users, newUser];
