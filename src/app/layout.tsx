@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: "Jalan Anda Menuju Kesehatan Mental",
   icons: { 
     icon: "/brain-circuit.png",
+    shortcut: "/brain-circuit.png",
+    apple: "/brain-circuit.png",
   },
 };
 
