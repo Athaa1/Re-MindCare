@@ -8,10 +8,25 @@ import PageWrapper from "@/components/layout/PageWrapper";
 export const metadata: Metadata = {
   title: "Re-MindCare",
   description: "Jalan Anda Menuju Kesehatan Mental",
-  icons: { 
-    icon: "/brain-circuit.png",
-    shortcut: "/brain-circuit.png",
-    apple: "/brain-circuit.png",
+  icons: {
+    icon: [
+      {
+        url: "/brain-circuit.svg",
+        type: "image/svg+xml",
+      },
+    ],
+    shortcut: [
+      {
+        url: "/brain-circuit.svg",
+        type: "image/svg+xml",
+      },
+    ],
+    apple: [
+      {
+        url: "/brain-circuit.svg",
+        type: "image/svg+xml",
+      },
+    ],
   },
 };
 
