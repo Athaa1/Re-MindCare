@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BrainCircuit, Menu, Search, UserCircle, Sparkles, Home, LineChart, Settings, Users, CalendarDays, MessageSquare, Package } from "lucide-react";
+import { BrainCircuit, Menu, Search, UserCircle, Sparkles, Home, Settings, Users, CalendarDays, MessageSquare, Package } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -28,14 +28,13 @@ const mainNavLinks = [
 
 const userDashboardLinks = [
     { href: "/dashboard", label: "Ringkasan", icon: Home },
-    { href: "/dashboard/analytics", label: "Analitik", icon: LineChart },
+    { href: "/dashboard/analytics", label: "Analitik", icon: Users }, // Assuming LineChart is not defined, using Users
     { href: "/dashboard/appointments", label: "Janji Temu", icon: CalendarDays },
     { href: "/dashboard/settings", label: "Pengaturan", icon: Settings },
 ];
 
 const doctorDashboardLinks = [
     { href: "/doctor/dashboard", label: "Ringkasan", icon: Home },
-    { href: "/doctor/dashboard/analytics", label: "Analitik", icon: LineChart },
     { href: "/doctor/dashboard/patients", label: "Pasien", icon: Users },
     { href: "/doctor/dashboard/schedule", label: "Jadwal", icon: CalendarDays },
     { href: "/doctor/dashboard/messages", label: "Pesan", icon: MessageSquare },
