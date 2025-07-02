@@ -1,11 +1,27 @@
+
+'use client';
+
+import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { resources } from "@/data/resources";
+import { resources, Resource } from "@/data/resources";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function ResourcesPage() {
+  const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
+
+  const handleReadMore = (resource: Resource) => {
+    setSelectedResource(resource);
+  };
+
+  const closeDialog = () => {
+    setSelectedResource(null);
+  };
+
   return (
     <div className="container mx-auto px-4 py-12 md:px-6 lg:py-20">
       <div className="text-center space-y-4 mb-12">
@@ -40,15 +56,39 @@ export default function ResourcesPage() {
               <p className="text-muted-foreground">{resource.description}</p>
             </CardContent>
             <CardFooter className="p-6 pt-0">
-              <Button asChild className="w-full font-semibold">
-                <Link href={resource.url}>
-                  {resource.type === 'Video' ? 'Tonton Sekarang' : 'Baca Selengkapnya'}
-                </Link>
-              </Button>
+              {resource.type === 'Artikel' ? (
+                <Button onClick={() => handleReadMore(resource)} className="w-full font-semibold">
+                  Baca Selengkapnya
+                </Button>
+              ) : (
+                <Button asChild className="w-full font-semibold">
+                  <Link href={resource.url}>
+                    Tonton Sekarang
+                  </Link>
+                </Button>
+              )}
             </CardFooter>
           </Card>
         ))}
       </div>
+
+      {selectedResource && (
+        <Dialog open={!!selectedResource} onOpenChange={(open) => !open && closeDialog()}>
+          <DialogContent className="sm:max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-headline">{selectedResource.title}</DialogTitle>
+              <DialogDescription>
+                {selectedResource.description}
+              </DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="max-h-[60vh] pr-6">
+              <div className="text-muted-foreground whitespace-pre-line py-4">
+                {selectedResource.content}
+              </div>
+            </ScrollArea>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
