@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -34,6 +35,7 @@ const userDashboardLinks = [
 
 const doctorDashboardLinks = [
     { href: "/doctor/dashboard", label: "Ringkasan", icon: Home },
+    { href: "/doctor/dashboard/analytics", label: "Analitik", icon: LineChart },
     { href: "/doctor/dashboard/patients", label: "Pasien", icon: Users },
     { href: "/doctor/dashboard/schedule", label: "Jadwal", icon: CalendarDays },
     { href: "/doctor/dashboard/messages", label: "Pesan", icon: MessageSquare },
