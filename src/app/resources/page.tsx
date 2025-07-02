@@ -13,6 +13,13 @@ import AiResourceTool from '@/components/forum/AiResourceTool';
 
 export default function ResourcesPage() {
   const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
+
+  const totalPages = Math.ceil(resources.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentResources = resources.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
 
   return (
     <div className="container mx-auto px-4 py-12 md:px-6 lg:py-20">
@@ -25,7 +32,7 @@ export default function ResourcesPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {resources.map((resource) => (
+            {currentResources.map((resource) => (
               <Card key={resource.title} className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-xl">
                 <div className="relative">
                   <Image
@@ -57,6 +64,27 @@ export default function ResourcesPage() {
               </Card>
             ))}
           </div>
+           {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-4 mt-12">
+              <Button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                variant="outline"
+              >
+                Sebelumnya
+              </Button>
+              <span className="text-sm font-medium text-muted-foreground">
+                Halaman {currentPage} dari {totalPages}
+              </span>
+              <Button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                variant="outline"
+              >
+                Selanjutnya
+              </Button>
+            </div>
+          )}
         </div>
 
         <aside className="lg:col-span-1">
