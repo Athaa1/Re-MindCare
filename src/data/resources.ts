@@ -25,7 +25,7 @@ Ada beberapa strategi yang bisa membantu. Teknik relaksasi seperti pernapasan da
   },
   {
     title: "Meditasi Kesadaran untuk Pemula",
-    url: "/resources/mindfulness-meditation",
+    url: "https://www.youtube.com/embed/O-6f5wQXSu8",
     description: "Sesi video terpandu untuk memperkenalkan remaja pada praktik kesadaran untuk mengurangi stres dan kejernihan mental.",
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "person meditating",
@@ -46,7 +46,7 @@ Untuk meningkatkan kualitas tidur, coba buat rutinitas tidur yang konsisten, bah
   },
   {
     title: "Membangun Persahabatan Sehat",
-    url: "/resources/healthy-friendships",
+    url: "https://www.youtube.com/embed/gCarD8_i2fE",
     description: "Panduan video tentang cara membina persahabatan yang suportif dan positif selama masa remaja.",
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "friends talking",

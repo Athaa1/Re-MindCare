@@ -3,7 +3,6 @@
 
 import { useState } from 'react';
 import Image from "next/image";
-import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,14 +12,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function ResourcesPage() {
   const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
-
-  const handleReadMore = (resource: Resource) => {
-    setSelectedResource(resource);
-  };
-
-  const closeDialog = () => {
-    setSelectedResource(null);
-  };
 
   return (
     <div className="container mx-auto px-4 py-12 md:px-6 lg:py-20">
@@ -56,36 +47,43 @@ export default function ResourcesPage() {
               <p className="text-muted-foreground">{resource.description}</p>
             </CardContent>
             <CardFooter className="p-6 pt-0">
-              {resource.type === 'Artikel' ? (
-                <Button onClick={() => handleReadMore(resource)} className="w-full font-semibold">
-                  Baca Selengkapnya
-                </Button>
-              ) : (
-                <Button asChild className="w-full font-semibold">
-                  <Link href={resource.url}>
-                    Tonton Sekarang
-                  </Link>
-                </Button>
-              )}
+              <Button onClick={() => setSelectedResource(resource)} className="w-full font-semibold">
+                {resource.type === 'Artikel' ? 'Baca Selengkapnya' : 'Tonton Sekarang'}
+              </Button>
             </CardFooter>
           </Card>
         ))}
       </div>
 
       {selectedResource && (
-        <Dialog open={!!selectedResource} onOpenChange={(open) => !open && closeDialog()}>
-          <DialogContent className="sm:max-w-2xl">
+        <Dialog open={!!selectedResource} onOpenChange={(open) => !open && setSelectedResource(null)}>
+          <DialogContent className="sm:max-w-3xl">
             <DialogHeader>
               <DialogTitle className="text-2xl font-headline">{selectedResource.title}</DialogTitle>
               <DialogDescription>
                 {selectedResource.description}
               </DialogDescription>
             </DialogHeader>
-            <ScrollArea className="max-h-[60vh] pr-6">
-              <div className="text-muted-foreground whitespace-pre-line py-4">
-                {selectedResource.content}
-              </div>
-            </ScrollArea>
+            <div className="py-4">
+              {selectedResource.type === 'Artikel' ? (
+                <ScrollArea className="max-h-[60vh] pr-6">
+                  <div className="text-muted-foreground whitespace-pre-line">
+                    {selectedResource.content}
+                  </div>
+                </ScrollArea>
+              ) : (
+                <div className="aspect-video w-full">
+                  <iframe
+                    src={selectedResource.url}
+                    title={selectedResource.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full rounded-lg"
+                  ></iframe>
+                </div>
+              )}
+            </div>
           </DialogContent>
         </Dialog>
       )}
