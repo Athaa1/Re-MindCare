@@ -52,7 +52,7 @@ const quickLinks = [
         icon: HeartHandshake,
         title: "Alat Sumber Daya AI",
         description: "Dapatkan saran sumber daya berbasis AI berdasarkan postingan Anda.",
-        href: "/forum",
+        href: "/resources",
         cta: "Dapatkan Saran"
     }
 ]
