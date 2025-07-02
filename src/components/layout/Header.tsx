@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BrainCircuit, Menu, Search, UserCircle, Sparkles, Home, LineChart, Settings, Users, CalendarDays, MessageSquare } from "lucide-react";
+import { BrainCircuit, Menu, Search, UserCircle, Sparkles, Home, LineChart, Settings, Users, CalendarDays, MessageSquare, Package } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -51,6 +51,7 @@ export function Header() {
   if (isUserDashboard || isDoctorDashboard) {
     const isDoctor = currentUser?.role === 'doctor';
     const mobileNavLinks = isDoctor ? doctorDashboardLinks : userDashboardLinks;
+    const dashboardHome = isDoctor ? '/doctor/dashboard' : '/dashboard';
 
     return (
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -64,11 +65,11 @@ export function Header() {
                 <SheetContent side="left" className="sm:max-w-xs">
                 <nav className="grid gap-6 text-lg font-medium">
                     <Link
-                        href="/"
+                        href={dashboardHome}
                         className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
                     >
-                        <BrainCircuit className="h-5 w-5 transition-all group-hover:scale-110" />
-                        <span className="sr-only">Re-MindCare</span>
+                        <Package className="h-5 w-5 transition-all group-hover:scale-110" />
+                        <span className="sr-only">Dasbor</span>
                     </Link>
                     {mobileNavLinks.map(({ href, label, icon: Icon }) => (
                          <Link
@@ -76,7 +77,7 @@ export function Header() {
                             href={href}
                             className={cn(
                                 "flex items-center gap-4 px-2.5",
-                                pathname === href ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                                pathname.startsWith(href) ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                             )}
                         >
                             <Icon className="h-5 w-5" />
@@ -89,7 +90,7 @@ export function Header() {
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
                         <Home className="h-5 w-5" />
-                        Beranda Utama
+                        Halaman Utama
                     </Link>
                 </nav>
                 </SheetContent>
@@ -149,9 +150,31 @@ export function Header() {
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end">
-            <Button asChild>
-                <Link href="/login">Masuk</Link>
-            </Button>
+            {currentUser ? (
+                 <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="overflow-hidden rounded-full"
+                    >
+                        <UserCircle className="h-8 w-8" />
+                    </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>{currentUser.name}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(currentUser.role === 'doctor' ? '/doctor/dashboard' : '/dashboard')}>Dasbor</DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">Dukungan</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer" onClick={logout}>Keluar</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            ) : (
+                <Button asChild>
+                    <Link href="/login">Masuk</Link>
+                </Button>
+            )}
             <div className="md:hidden ml-4">
                 <Sheet>
                     <SheetTrigger asChild>

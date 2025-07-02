@@ -35,7 +35,7 @@ export function DoctorDashboardNav() {
                                     href={href}
                                     className={cn(
                                         "flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8",
-                                        pathname === href ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
+                                        pathname.startsWith(href) && href !== '/doctor/dashboard' || pathname === href ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
                                     )}
                                 >
                                     <Icon className="h-5 w-5" />

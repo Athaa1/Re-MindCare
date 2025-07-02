@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
@@ -12,12 +12,22 @@ type User = {
   role: 'user' | 'doctor';
 };
 
+type AuthContextType = {
+  currentUser: User | null | undefined;
+  users: User[];
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+};
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 const initialUsers: User[] = [
     { id: '1', name: 'Admin User', email: 'user@example.com', password_DO_NOT_USE_IN_PROD: '123123', role: 'user' },
     { id: '2', name: 'Dr. Anya Sharma', email: 'anya.sharma@example.com', password_DO_NOT_USE_IN_PROD: '123123', role: 'doctor' }
 ];
 
-export function useAuth() {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [users, setUsers] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined);
   const router = useRouter();
@@ -28,12 +38,12 @@ export function useAuth() {
         const storedUsersRaw = localStorage.getItem('dummy_users');
         const storedUsers = storedUsersRaw ? JSON.parse(storedUsersRaw) : [];
 
-        // Create a map from stored users
         const combinedUsersMap = new Map(storedUsers.map((u: User) => [u.email, u]));
 
-        // Merge initial users from code, overwriting any with the same email
         initialUsers.forEach(initialUser => {
-            combinedUsersMap.set(initialUser.email, initialUser);
+            if (!combinedUsersMap.has(initialUser.email)) {
+              combinedUsersMap.set(initialUser.email, initialUser);
+            }
         });
 
         const allUsers = Array.from(combinedUsersMap.values());
@@ -122,5 +132,21 @@ export function useAuth() {
     });
   };
 
-  return { currentUser, users, login, register, logout };
+  const value = {
+    currentUser,
+    users,
+    login,
+    register,
+    logout,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 }

@@ -47,7 +47,7 @@ export const specialists: Specialist[] = [
   },
   {
     id: "5",
-    name: "Ahta",
+    name: "Atha",
     title: "Terapis Depresi dan Penyakit Mematikan (MFT)",
     specialties: ["Konflik Pasangan", "Komunikasi", "Masalah Kampus", "Depresi Karena Penyakit Mematikan"],
     bio: "Atha bekerja dengan remaja dan keluarga mereka untuk meningkatkan komunikasi, menyelesaikan konflik, dan membangun harga diri, dan percaya diri.",
