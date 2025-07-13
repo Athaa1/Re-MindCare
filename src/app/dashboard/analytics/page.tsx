@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { addDays, format } from "date-fns"
 import { DateRange } from "react-day-picker"
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Cell } from "recharts"
@@ -66,6 +66,50 @@ export default function AnalyticsPage() {
         from: new Date(2024, 6, 1),
         to: addDays(new Date(2024, 6, 1), 9),
     })
+    const [engagementStats, setEngagementStats] = useState({
+        post_count: 0,
+        reply_count: 0,
+        total_engagement: 0,
+    });
+    const [engagementLoading, setEngagementLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchEngagementStats = async () => {
+            try {
+                setEngagementLoading(true);
+                console.log('Fetching engagement stats...');
+                
+                const response = await fetch('/api/forum/engagement');
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch engagement stats');
+                }
+                const data = await response.json();
+                console.log('Received engagement data:', data);
+                
+                if (data.success) {
+                    const newStats = {
+                        post_count: data.post_count || 0,
+                        reply_count: data.reply_count || 0,
+                        total_engagement: data.total_engagement || 0,
+                    };
+                    console.log('Setting engagement stats:', newStats);
+                    setEngagementStats(newStats);
+                } else {
+                    console.warn('Engagement stats API returned unsuccessful response:', data);
+                    // Keep default values
+                }
+            } catch (error) {
+                console.error('Error fetching engagement stats:', error);
+                // Keep default values (0, 0, 0) which are already set in state
+            } finally {
+                setEngagementLoading(false);
+            }
+        };
+
+        fetchEngagementStats();
+    }, []);
 
     return (
         <div className="flex flex-col gap-8">
@@ -151,8 +195,18 @@ export default function AnalyticsPage() {
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">+5 Postingan</div>
-                        <p className="text-xs text-muted-foreground">Bergabung dalam 1 percakapan baru</p>
+                        {engagementLoading ? (
+                            <div className="flex items-center space-x-2">
+                                <div className="text-2xl font-bold">Loading...</div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="text-2xl font-bold">{engagementStats.total_engagement} Kontribusi</div>
+                                <p className="text-xs text-muted-foreground">
+                                    {engagementStats.post_count} postingan dan {engagementStats.reply_count} balasan
+                                </p>
+                            </>
+                        )}
                     </CardContent>
                 </Card>
             </div>
