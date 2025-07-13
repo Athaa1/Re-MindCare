@@ -8,8 +8,45 @@
  */
 
 import {ai} from '@/ai/genkit';
-import { specialists } from '@/data/specialists';
 import {z} from 'genkit';
+
+// Function to fetch doctors from database
+async function fetchDoctorsFromDatabase() {
+  try {
+    // Use Next.js API route which works in both server and client side
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://your-domain.com' 
+      : 'http://localhost:3000';
+    
+    const response = await fetch(`${baseUrl}/api/doctors`);
+    const data = await response.json();
+    
+    if (data.success) {
+      return data.data;
+    } else {
+      console.error('Failed to fetch doctors:', data.message);
+      return getFallbackDoctors();
+    }
+  } catch (error) {
+    console.error('Error fetching doctors:', error);
+    return getFallbackDoctors();
+  }
+}
+
+// Fallback doctors if database fails
+function getFallbackDoctors() {
+  return [
+    {
+      id: "1",
+      name: "atha",
+      title: "S.kom",
+      specialties: ["kecemasan", "strict parents"],
+      bio: "dokter kecemasan",
+      imageUrl: "https://placehold.co/100x100.png",
+      imageHint: "doctor portrait"
+    }
+  ];
+}
 
 const FindSpecialistInputSchema = z.object({
   complaint: z.string().describe("Deskripsi keluhan kesehatan mental pengguna atau apa yang mereka cari dari seorang terapis."),
@@ -23,6 +60,7 @@ const RecommendedSpecialistSchema = z.object({
   specialties: z.array(z.string()).describe("Daftar bidang keahlian spesialis."),
   bio: z.string().describe("Biografi singkat spesialis."),
   imageUrl: z.string().describe("URL ke foto spesialis."),
+  imageHint: z.string().describe("Hint untuk gambar spesialis."),
   reason: z.string().describe("Penjelasan rinci mengapa spesialis ini cocok untuk pengguna berdasarkan keluhan mereka."),
 });
 
@@ -64,9 +102,12 @@ const findSpecialistFlow = ai.defineFlow(
     outputSchema: FindSpecialistOutputSchema,
   },
   async (input) => {
+    // Fetch real doctors from database
+    const doctors = await fetchDoctorsFromDatabase();
+    
     const { output } = await prompt({
         complaint: input.complaint,
-        specialists: specialists,
+        specialists: doctors,
     });
     return output!;
   }

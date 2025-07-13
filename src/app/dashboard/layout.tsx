@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { DashboardNav } from "@/components/dashboard/nav";
-import { useAuth } from "@/hooks/use-auth";
 import { Loader2 } from "lucide-react";
 
 export default function DashboardLayout({
@@ -12,21 +11,33 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { currentUser } = useAuth();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // If loading is finished and there's no user, redirect to login.
-    if (currentUser === null) {
+    // Check if user is logged in and is a regular user
+    const userData = localStorage.getItem('user');
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    
+    if (!userData || !isLoggedIn) {
       router.replace("/login");
-    } else if (currentUser && currentUser.role !== 'user') {
-      // If logged-in user is not a 'user', redirect away.
-      router.replace("/doctor/dashboard");
+      return;
     }
-  }, [currentUser, router]);
+    
+    const parsedUser = JSON.parse(userData);
+    
+    if (parsedUser.is_doctor === 1) {
+      // If user is a doctor, redirect them to doctor dashboard
+      router.replace("/doctor/dashboard");
+      return;
+    }
+    
+    setUser(parsedUser);
+    setLoading(false);
+  }, [router]);
 
-  // While loading, show a full-screen spinner.
-  if (currentUser === undefined) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -34,8 +45,12 @@ export default function DashboardLayout({
     );
   }
 
+  if (!user) {
+    return null;
+  }
+
   // If user is logged in, render the dashboard layout.
-  return currentUser && currentUser.role === 'user' ? (
+  return (
     <div className="flex min-h-screen w-full flex-col">
         <Header />
         <div className="flex min-h-[calc(100vh-4rem)]">
@@ -45,5 +60,5 @@ export default function DashboardLayout({
             </main>
         </div>
     </div>
-  ) : null;
+  );
 }

@@ -7,8 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { BrainCircuit, ArrowLeft, Loader2 } from 'lucide-react';
-import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 
 export default function RegisterPage() {
@@ -17,11 +17,13 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const { register } = useAuth();
     const { toast } = useToast();
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Validate password confirmation
         if (password !== confirmPassword) {
             toast({
                 variant: 'destructive',
@@ -30,9 +32,86 @@ export default function RegisterPage() {
             });
             return;
         }
+        
+        // Validate password length
+        if (password.length < 6) {
+            toast({
+                variant: 'destructive',
+                title: 'Kesalahan',
+                description: 'Password minimal 6 karakter.',
+            });
+            return;
+        }
+
         setLoading(true);
-        await register(name, email, password);
-        setLoading(false);
+        
+        try {
+            const response = await fetch('http://localhost/Re-MindCare/backendPHP/Register/authRegister.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                const userType = data.user.is_doctor ? 'dokter' : 'pengguna';
+                toast({
+                    title: 'Registrasi Berhasil',
+                    description: `Akun ${userType} Anda telah dibuat. Silakan masuk.`,
+                });
+                
+                // Reset form
+                setName('');
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+                
+                // Redirect to login page
+                router.push('/login');
+            } else {
+                toast({
+                    variant: 'destructive',
+                    title: 'Registrasi Gagal',
+                    description: data.error || 'Terjadi kesalahan saat membuat akun.',
+                });
+            }
+        } catch (error) {
+            console.error('Registration failed:', error);
+            
+            // Try to get the response text for debugging
+            try {
+                const response = await fetch('http://localhost/Re-MindCare/backendPHP/Register/authRegister.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password,
+                    }),
+                });
+                const text = await response.text();
+                console.log('Raw response:', text);
+            } catch (debugError) {
+                console.log('Debug error:', debugError);
+            }
+            
+            toast({
+                variant: 'destructive',
+                title: 'Kesalahan',
+                description: 'Terjadi kesalahan koneksi. Pastikan server PHP berjalan dan database memiliki kolom is_doctor.',
+            });
+        } finally {
+            setLoading(false);
+        }
     }
 
   return (
@@ -65,6 +144,9 @@ export default function RegisterPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
                 />
+                <p className="text-sm text-muted-foreground">
+                    Gunakan @doctor.com untuk akun dokter
+                </p>
                 </div>
                 <div className="grid gap-2">
                 <Label htmlFor="password">Kata Sandi</Label>

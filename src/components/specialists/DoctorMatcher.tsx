@@ -113,7 +113,7 @@ export default function DoctorMatcher() {
                     results.map((specialist) => (
                     <Card key={specialist.name} className="flex flex-col md:flex-row items-start gap-6 p-6 overflow-hidden transition-all duration-300 hover:shadow-xl">
                         <Avatar className="w-24 h-24 border-4 border-primary/20">
-                            <AvatarImage src={specialist.imageUrl} alt={specialist.name} data-ai-hint="person portrait" />
+                            <AvatarImage src={specialist.imageUrl} alt={specialist.name} data-ai-hint={specialist.imageHint || "doctor portrait"} />
                             <AvatarFallback>{specialist.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1">

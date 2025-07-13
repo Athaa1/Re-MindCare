@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { specialists, Specialist } from '@/data/specialists';
+import { fetchSpecialistsFromDatabase, Specialist } from '@/data/specialists';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
@@ -29,27 +29,36 @@ export default function ConsultationPage() {
 
 
   useEffect(() => {
-    const foundSpecialist = specialists.find((s) => s.id === id);
-    if (foundSpecialist) {
-      setSpecialist(foundSpecialist);
-      setMessages([
-        {
-          sender: 'doctor',
-          text: `Halo! Saya ${foundSpecialist.name}. Silakan ceritakan apa yang Anda rasakan. Saya di sini untuk mendengarkan.`,
-          timestamp: "09:00",
-        },
-        {
-          sender: 'user',
-          text: 'Halo, Dok. Akhir-akhir ini saya merasa sangat cemas dengan sekolah dan sulit untuk fokus pada tugas-tugas saya. Rasanya kewalahan.',
-          timestamp: "09:01",
-        },
-        {
-            sender: 'doctor',
-            text: 'Terima kasih sudah berbagi. Saya mengerti perasaan kewalahan itu bisa sangat mengganggu. Bisa ceritakan lebih lanjut apa yang membuat Anda merasa cemas terkait sekolah?',
-            timestamp: "09:02"
+    const loadSpecialist = async () => {
+      try {
+        const specialists = await fetchSpecialistsFromDatabase();
+        const foundSpecialist = specialists.find((s) => s.id === id);
+        if (foundSpecialist) {
+          setSpecialist(foundSpecialist);
+          setMessages([
+            {
+              sender: 'doctor',
+              text: `Halo! Saya ${foundSpecialist.name}. Silakan ceritakan apa yang Anda rasakan. Saya di sini untuk mendengarkan.`,
+              timestamp: "09:00",
+            },
+            {
+              sender: 'user',
+              text: 'Halo, Dok. Akhir-akhir ini saya merasa sangat cemas dengan sekolah dan sulit untuk fokus pada tugas-tugas saya. Rasanya kewalahan.',
+              timestamp: "09:01",
+            },
+            {
+                sender: 'doctor',
+                text: 'Terima kasih sudah berbagi. Saya mengerti perasaan kewalahan itu bisa sangat mengganggu. Bisa ceritakan lebih lanjut apa yang membuat Anda merasa cemas terkait sekolah?',
+                timestamp: "09:02"
+            }
+          ]);
         }
-      ]);
-    }
+      } catch (error) {
+        console.error('Error loading specialist:', error);
+      }
+    };
+
+    loadSpecialist();
   }, [id]);
 
   useEffect(() => {

@@ -1,67 +1,193 @@
 'use client';
 
-import { useState } from 'react';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
+import { useState, useEffect } from 'react';
+import { getCurrentUserId, getCurrentUser } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, Calendar as CalendarIcon, Clock, Video, MoreVertical } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { PlusCircle, Calendar as CalendarIcon, Clock, User, MessageSquare, Phone, FileText, AlertCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ScheduleAppointmentDialog from '@/components/appointments/ScheduleAppointmentDialog';
+import { useToast } from '@/hooks/use-toast';
 
 type Appointment = {
   id: string;
-  specialistName: string;
-  specialistTitle: string;
-  date: Date;
-  time: string;
+  doctor_id: string;
+  doctor_name: string;
+  doctor_title: string;
+  doctor_image: string;
+  appointment_date: string;
+  appointment_time: string;
   notes: string;
+  status: 'pending' | 'confirmed' | 'canceled';
+  created_at: string;
+  updated_at: string;
 };
 
-const initialAppointments: Appointment[] = [
-  { id: '1', specialistName: 'Dr. Anya Sharma', specialistTitle: 'Psikolog Klinis, PhD', date: new Date('2024-07-25T14:30:00'), time: '14:30', notes: 'Diskusi awal tentang kecemasan.' },
-  { id: '2', specialistName: 'David Chen', specialistTitle: 'Pekerja Sosial Klinis', date: new Date('2024-07-28T11:00:00'), time: '11:00', notes: 'Sesi tindak lanjut tentang strategi manajemen stres.' },
-];
-
 export default function AppointmentsPage() {
-  const [appointments, setAppointments] = useState<Appointment[]>(initialAppointments);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const { toast } = useToast();
 
-  const handleAppointmentScheduled = (scheduledAppointment: Appointment) => {
-    setAppointments(prev => [...prev, scheduledAppointment].sort((a, b) => a.date.getTime() - b.date.getTime()));
+  useEffect(() => {
+    const user = getCurrentUser();
+    setCurrentUser(user);
+  }, []);
+
+  useEffect(() => {
+    const loadAppointments = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const userId = getCurrentUserId();
+        console.log('Loading all appointments for user:', userId);
+        
+        const response = await fetch(`/api/appointments?user_id=${userId}`);
+        const data = await response.json();
+        
+        if (data.success) {
+          // Sort by date and time (newest first)
+          const sortedAppointments = data.data.sort((a: Appointment, b: Appointment) => {
+            const dateA = new Date(`${a.appointment_date} ${a.appointment_time}`);
+            const dateB = new Date(`${b.appointment_date} ${b.appointment_time}`);
+            return dateB.getTime() - dateA.getTime();
+          });
+          
+          setAppointments(sortedAppointments);
+        } else {
+          setError(data.message || 'Gagal memuat janji temu');
+        }
+      } catch (error) {
+        console.error('Error loading appointments:', error);
+        setError('Terjadi kesalahan saat memuat janji temu');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAppointments();
+  }, []);
+
+  const handleAppointmentScheduled = (scheduledAppointment: any) => {
+    // Refresh the appointments list
+    window.location.reload();
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const formatTime = (timeString: string) => {
+    const [hours, minutes] = timeString.split(':');
+    return `${hours}:${minutes}`;
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'confirmed':
+        return <Badge variant="default" className="bg-green-500">Dikonfirmasi</Badge>;
+      case 'pending':
+        return <Badge variant="secondary">Menunggu Konfirmasi</Badge>;
+      case 'canceled':
+        return <Badge variant="destructive">Dibatalkan</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
+  const filterAppointments = (filter: 'all' | 'upcoming' | 'past' | 'pending') => {
+    const now = new Date();
+    
+    return appointments.filter(appointment => {
+      const appointmentDateTime = new Date(`${appointment.appointment_date} ${appointment.appointment_time}`);
+      
+      switch (filter) {
+        case 'upcoming':
+          return appointmentDateTime > now && appointment.status !== 'canceled';
+        case 'past':
+          return appointmentDateTime <= now;
+        case 'pending':
+          return appointment.status === 'pending';
+        default:
+          return true;
+      }
+    });
   };
 
   const now = new Date();
-  const upcomingAppointments = appointments.filter(a => a.date >= now);
-  const pastAppointments = appointments.filter(a => a.date < now);
 
-  const AppointmentCard = ({ appt }: { appt: Appointment }) => (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-xl">{appt.specialistName}</CardTitle>
-        <CardDescription>{appt.specialistTitle}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex items-center text-sm">
-          <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
-          <span>{format(appt.date, 'EEEE, dd MMMM yyyy', { locale: id })}</span>
-        </div>
-        <div className="flex items-center text-sm">
-          <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-          <span>Pukul {appt.time} WIB</span>
-        </div>
-        {appt.notes && <p className="text-sm text-muted-foreground pt-2"><strong>Catatan:</strong> {appt.notes}</p>}
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" disabled={appt.date < now}>
-          <Video className="mr-2 h-4 w-4" />
-          Gabung Sesi
-        </Button>
-        <Button variant="ghost" size="icon">
-          <MoreVertical className="h-4 w-4" />
-        </Button>
-      </CardFooter>
-    </Card>
-  );
+  const AppointmentCard = ({ appointment }: { appointment: Appointment }) => {
+    const appointmentDateTime = new Date(`${appointment.appointment_date} ${appointment.appointment_time}`);
+    const isUpcoming = appointmentDateTime > now;
+    
+    return (
+      <Card className="mb-4">
+        <CardHeader>
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-4">
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={appointment.doctor_image} alt={appointment.doctor_name} />
+                <AvatarFallback>
+                  <User className="h-6 w-6" />
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle className="text-lg">{appointment.doctor_name}</CardTitle>
+                <CardDescription>{appointment.doctor_title}</CardDescription>
+              </div>
+            </div>
+            {getStatusBadge(appointment.status)}
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex items-center text-sm">
+            <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+            <span>{formatDate(appointment.appointment_date)}</span>
+          </div>
+          <div className="flex items-center text-sm">
+            <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
+            <span>Pukul {formatTime(appointment.appointment_time)} WIB</span>
+          </div>
+          {appointment.notes && (
+            <div className="flex items-start text-sm">
+              <FileText className="mr-2 h-4 w-4 text-muted-foreground mt-0.5" />
+              <span className="text-muted-foreground"><strong>Catatan:</strong> {appointment.notes}</span>
+            </div>
+          )}
+          
+          <div className="flex flex-wrap gap-2 pt-4">
+            {isUpcoming ? (
+              <>
+                <Button size="sm" variant="default">
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Chat
+                </Button>
+                <Button size="sm" variant="outline">
+                  <Phone className="h-4 w-4 mr-2" />
+                  Hubungi
+                </Button>
+              </>
+            ) : (
+              <Button size="sm" variant="outline">
+                <FileText className="h-4 w-4 mr-2" />
+                Lihat Catatan
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <div className="flex flex-col gap-8">
@@ -78,28 +204,52 @@ export default function AppointmentsPage() {
         </ScheduleAppointmentDialog>
       </div>
 
-      <Tabs defaultValue="upcoming" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="upcoming">Akan Datang ({upcomingAppointments.length})</TabsTrigger>
-          <TabsTrigger value="past">Selesai ({pastAppointments.length})</TabsTrigger>
+      <Tabs defaultValue="all" className="w-full">
+        <TabsList className="grid grid-cols-4 w-full">
+          <TabsTrigger value="all">Semua ({appointments.length})</TabsTrigger>
+          <TabsTrigger value="upcoming">Akan Datang ({filterAppointments('upcoming').length})</TabsTrigger>
+          <TabsTrigger value="past">Selesai ({filterAppointments('past').length})</TabsTrigger>
+          <TabsTrigger value="pending">Menunggu ({filterAppointments('pending').length})</TabsTrigger>
         </TabsList>
-        <TabsContent value="upcoming">
-          <div className="grid gap-6 mt-6 md:grid-cols-2">
-            {upcomingAppointments.length > 0 ? (
-              upcomingAppointments.map(appt => <AppointmentCard key={appt.id} appt={appt} />)
-            ) : (
-              <p className="text-muted-foreground col-span-2 text-center py-10">Anda tidak memiliki janji temu yang akan datang.</p>
-            )}
-          </div>
+        
+        <TabsContent value="all" className="space-y-4">
+          {appointments.length > 0 ? (
+            appointments.map(appointment => <AppointmentCard key={appointment.id} appointment={appointment} />)
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">Belum ada janji temu</p>
+            </div>
+          )}
         </TabsContent>
-        <TabsContent value="past">
-            <div className="grid gap-6 mt-6 md:grid-cols-2">
-            {pastAppointments.length > 0 ? (
-              pastAppointments.map(appt => <AppointmentCard key={appt.id} appt={appt} />)
-            ) : (
-              <p className="text-muted-foreground col-span-2 text-center py-10">Anda belum memiliki janji temu yang selesai.</p>
-            )}
-          </div>
+        
+        <TabsContent value="upcoming" className="space-y-4">
+          {filterAppointments('upcoming').length > 0 ? (
+            filterAppointments('upcoming').map(appointment => <AppointmentCard key={appointment.id} appointment={appointment} />)
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">Tidak ada janji temu yang akan datang</p>
+            </div>
+          )}
+        </TabsContent>
+        
+        <TabsContent value="past" className="space-y-4">
+          {filterAppointments('past').length > 0 ? (
+            filterAppointments('past').map(appointment => <AppointmentCard key={appointment.id} appointment={appointment} />)
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">Tidak ada janji temu yang telah selesai</p>
+            </div>
+          )}
+        </TabsContent>
+        
+        <TabsContent value="pending" className="space-y-4">
+          {filterAppointments('pending').length > 0 ? (
+            filterAppointments('pending').map(appointment => <AppointmentCard key={appointment.id} appointment={appointment} />)
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">Tidak ada janji temu yang menunggu konfirmasi</p>
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </div>

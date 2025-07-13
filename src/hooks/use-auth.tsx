@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         const allUsers = Array.from(combinedUsersMap.values());
 
-        setUsers(allUsers);
+        // setUsers(allUsers);
         localStorage.setItem('dummy_users', JSON.stringify(allUsers));
 
         const sessionUser = localStorage.getItem('dummy_session');
@@ -92,44 +92,84 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
-    const existingUser = users.find((u) => u.email === email);
-    if (existingUser) {
+    try {
+      const response = await fetch('http://localhost/Re-MindCare/backendPHP/Register/authRegister.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: 'Registrasi Berhasil',
+          description: 'Akun Anda telah dibuat. Silakan masuk.',
+        });
+
+        router.push('/login');
+        return true;
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Registrasi Gagal',
+          description: data.error || 'Terjadi kesalahan saat membuat akun.',
+        });
+        return false;
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
       toast({
         variant: 'destructive',
         title: 'Registrasi Gagal',
-        description: 'Email ini sudah terdaftar.',
+        description: 'Terjadi kesalahan koneksi. Silakan coba lagi.',
       });
       return false;
     }
-
-    const newUser: User = {
-      id: new Date().getTime().toString(),
-      name,
-      email,
-      password_DO_NOT_USE_IN_PROD: password,
-      role: 'user', // Default role for new registrations
-    };
-
-    const updatedUsers = [...users, newUser];
-    setUsers(updatedUsers);
-    localStorage.setItem('dummy_users', JSON.stringify(updatedUsers));
-
-    toast({
-      title: 'Registrasi Berhasil',
-      description: 'Akun Anda telah dibuat. Silakan masuk.',
-    });
-
-    router.push('/login');
-    return true;
   };
 
-  const logout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('dummy_session');
-    router.push('/login');
-    toast({
-      title: 'Logout Berhasil',
-    });
+  const logout = async () => {
+    try {
+      // Call the PHP logout endpoint
+      const response = await fetch('http://localhost/Re-MindCare/backendPHP/Logout/authLogout.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Clear localStorage and session regardless of server response
+      setCurrentUser(null);
+      localStorage.removeItem('dummy_session');
+      localStorage.removeItem('user');
+      localStorage.removeItem('isLoggedIn');
+      
+      toast({
+        title: 'Logout Berhasil',
+      });
+      
+      router.push('/login');
+      
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still clear localStorage and redirect even if server request fails
+      setCurrentUser(null);
+      localStorage.removeItem('dummy_session');
+      localStorage.removeItem('user');
+      localStorage.removeItem('isLoggedIn');
+      
+      toast({
+        title: 'Logout Berhasil',
+      });
+      
+      router.push('/login');
+    }
   };
 
   const value = {

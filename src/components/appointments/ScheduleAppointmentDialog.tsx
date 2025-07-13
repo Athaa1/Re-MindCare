@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { specialists } from '@/data/specialists';
+import { fetchSpecialistsFromDatabase } from '@/data/specialists';
+import type { Specialist } from '@/data/specialists';
+import { getCurrentUserId, getCurrentUser } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Calendar } from '@/components/ui/calendar';
@@ -28,6 +30,9 @@ type ScheduleAppointmentDialogProps = {
 
 export default function ScheduleAppointmentDialog({ children, specialistId, onAppointmentScheduled }: ScheduleAppointmentDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [specialists, setSpecialists] = useState<Specialist[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [newAppointment, setNewAppointment] = useState<{
     specialistId: string;
     date: Date | undefined;
@@ -36,13 +41,41 @@ export default function ScheduleAppointmentDialog({ children, specialistId, onAp
   }>({ specialistId: specialistId || '', date: undefined, time: '', notes: '' });
   const { toast } = useToast();
 
+  // Load current user
+  useEffect(() => {
+    const user = getCurrentUser();
+    setCurrentUser(user);
+  }, []);
+
+  // Load specialists from database
+  useEffect(() => {
+    const loadSpecialists = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchSpecialistsFromDatabase();
+        setSpecialists(data);
+      } catch (error) {
+        console.error('Error loading specialists:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Gagal memuat data dokter.',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSpecialists();
+  }, [toast]);
+
   useEffect(() => {
     if(specialistId){
       setNewAppointment(p => ({...p, specialistId: specialistId}))
     }
   }, [specialistId]);
 
-  const handleSchedule = () => {
+  const handleSchedule = async () => {
     if (!newAppointment.specialistId || !newAppointment.date || !newAppointment.time) {
       toast({
         variant: 'destructive',
@@ -55,28 +88,80 @@ export default function ScheduleAppointmentDialog({ children, specialistId, onAp
     const specialist = specialists.find(s => s.id === newAppointment.specialistId);
     if (!specialist) return;
     
-    const combinedDateTime = new Date(newAppointment.date);
-    const [hours, minutes] = newAppointment.time.split(':').map(Number);
-    combinedDateTime.setHours(hours, minutes);
-
-    const scheduledAppointment: Appointment = {
-      id: new Date().toISOString(),
-      specialistName: specialist.name,
-      specialistTitle: specialist.title,
-      date: combinedDateTime,
-      time: newAppointment.time,
-      notes: newAppointment.notes,
-    };
-
-    onAppointmentScheduled(scheduledAppointment);
+    setLoading(true);
     
-    setIsDialogOpen(false);
-    setNewAppointment({ specialistId: specialistId || '', date: undefined, time: '', notes: '' });
+    try {
+      // Get user session using helper function
+      const userId = getCurrentUserId();
+      
+      console.log('Using user_id:', userId);
+      
+      // Format date for database (YYYY-MM-DD)
+      const formattedDate = newAppointment.date.toISOString().split('T')[0];
+      
+      // Prepare appointment data
+      const appointmentData = {
+        user_id: userId,
+        doctor_id: parseInt(newAppointment.specialistId),
+        appointment_date: formattedDate,
+        appointment_time: newAppointment.time,
+        notes: newAppointment.notes,
+        status: 'pending'
+      };
+      
+      console.log('Scheduling appointment:', appointmentData);
+      
+      // Send to API
+      const response = await fetch('/api/appointments/schedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(appointmentData)
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        const combinedDateTime = new Date(newAppointment.date);
+        const [hours, minutes] = newAppointment.time.split(':').map(Number);
+        combinedDateTime.setHours(hours, minutes);
 
-    toast({
-      title: 'Janji Temu Dibuat!',
-      description: `Anda berhasil menjadwalkan pertemuan dengan ${specialist.name}.`,
-    });
+        const scheduledAppointment: Appointment = {
+          id: data.data.id.toString(),
+          specialistName: specialist.name,
+          specialistTitle: specialist.title,
+          date: combinedDateTime,
+          time: newAppointment.time,
+          notes: newAppointment.notes,
+        };
+
+        onAppointmentScheduled(scheduledAppointment);
+        
+        setIsDialogOpen(false);
+        setNewAppointment({ specialistId: specialistId || '', date: undefined, time: '', notes: '' });
+
+        toast({
+          title: 'Janji Temu Berhasil Dibuat!',
+          description: `Appointment Anda dengan ${specialist.name} telah disimpan ke database.`,
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Gagal Membuat Janji Temu',
+          description: data.message || 'Terjadi kesalahan saat menyimpan appointment.',
+        });
+      }
+    } catch (error) {
+      console.error('Error scheduling appointment:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Terjadi kesalahan saat menghubungi server.',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -89,6 +174,11 @@ export default function ScheduleAppointmentDialog({ children, specialistId, onAp
           <DialogTitle>Jadwalkan Janji Temu Baru</DialogTitle>
           <DialogDescription>
             Pilih spesialis dan waktu yang paling sesuai untuk Anda.
+            {currentUser && (
+              <div className="mt-2 text-sm text-muted-foreground">
+                📋 Appointment untuk: <span className="font-medium">{currentUser.name}</span> (ID: {currentUser.id})
+              </div>
+            )}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -103,9 +193,15 @@ export default function ScheduleAppointmentDialog({ children, specialistId, onAp
                 <SelectValue placeholder="Pilih seorang spesialis" />
               </SelectTrigger>
               <SelectContent>
-                {specialists.map(s => (
-                  <SelectItem key={s.id} value={s.id}>{s.name} - {s.title}</SelectItem>
-                ))}
+                {loading ? (
+                  <SelectItem value="loading" disabled>Memuat dokter...</SelectItem>
+                ) : specialists.length > 0 ? (
+                  specialists.map(s => (
+                    <SelectItem key={s.id} value={s.id}>{s.name} - {s.title}</SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="no-doctors" disabled>Tidak ada dokter tersedia</SelectItem>
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -141,7 +237,9 @@ export default function ScheduleAppointmentDialog({ children, specialistId, onAp
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleSchedule}>Konfirmasi Janji Temu</Button>
+          <Button type="submit" onClick={handleSchedule} disabled={loading}>
+            {loading ? 'Menyimpan...' : 'Konfirmasi Janji Temu'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
